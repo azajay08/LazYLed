@@ -28,8 +28,10 @@ const ColorPickerScreen: React.FC<ColorPickerScreenProps> = ({ route }) => {
 
   const [hsvColor, setHsvColor] = useState<HsvColor>({ h: 0, s: 100, v: 100 });
   const [userInteracted, setUserInteracted] = useState(false);
+  const [wheelColor , setWheelColor] = useState<string>(selectedColor);
 
   const handleColorChange = (color: string) => {
+    setWheelColor(color);
     setSelectedColor(deviceIp, color);
     const hsv = hexToHsv(color);
     setHsvColor(hsv);
@@ -60,7 +62,7 @@ const ColorPickerScreen: React.FC<ColorPickerScreenProps> = ({ route }) => {
       <View style={{ marginBottom: 40, flex: 1 }}>
 
       <ColorPicker
-        color={selectedColor}
+        color={wheelColor}
         onColorChange={handleColorChange}
         onInteractionStart={handleInteractionStart}
         thumbSize={50}
