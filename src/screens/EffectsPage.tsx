@@ -5,6 +5,7 @@ import { hexToHsv } from '../utils/hexToHsv';
 import { hsvToHex } from '../utils/hsvToHex';
 import ColorPicker from 'react-native-wheel-color-picker';
 import Slider from '@react-native-community/slider';
+
 interface EffectsPageProps {
   route: { params: { deviceIp: string } };
 }
