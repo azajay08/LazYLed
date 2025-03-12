@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 50,
-    borderRadius: 8,
+    borderRadius: 14,
     paddingHorizontal: 10,
     backgroundColor: 'rgba(10, 15, 20, 1)',
     borderWidth: 0.6,
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     backgroundColor: 'rgba(10, 15, 20, 1)',
-    borderRadius: 8,
+    borderRadius: 20,
     borderWidth: 0.6,
     borderColor: 'cyan',
   },
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   noEffectsContainer: {
     padding: 10,
     backgroundColor: 'rgba(10, 15, 20, 0.8)',
-    borderRadius: 8,
+    borderRadius: 20,
   },
   noEffectsText: {
     color: 'rgba(255, 255, 255, 0.6)',

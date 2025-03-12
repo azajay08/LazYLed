@@ -23,14 +23,25 @@ const HomeScreen: React.FC = () => {
           ) : (
             <View style={styles.sectionContentContainer}>
               {Object.entries(devices).map(([deviceIP, device]) => (
-                <View key={deviceIP} style={styles.deviceContainer}>
-                  <Text style={styles.deviceTitle}>
+                <View key={deviceIP} style={[
+                  styles.deviceContainer,
+                  device.effectName !== 'LEDs Off' && {
+                    shadowColor: device.selectedColor,
+                    shadowOpacity: 1,
+                    shadowRadius: 14,
+                  }
+                ]}>
+                  <Text style={[styles.deviceTitle,
+                    device.effectName !== 'LEDs Off' && {
+                      color: 'white',
+                    }
+                  ]}>
                     {device.deviceName || 'Unknown'}
                   </Text>
                   <IconWithGradient
                     iconName="led-strip-variant"
                     size={70}
-                    gradientColors={['#ff8700', '#00fff3', '#f000ff']}
+                    selectedColor={device.selectedColor}
                     effect={device.effectName || 'LEDs Off'}
                   />
                   <Text style={styles.sectionText}>
@@ -66,7 +77,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 15,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: 8,
+    borderRadius: 20,
   },
   sectionTitle: {
     fontSize: 18,
@@ -76,8 +87,8 @@ const styles = StyleSheet.create({
   },
   sectionText: {
     fontSize: 14,
-    color: 'white',
-    textAlign: 'center' as 'center',
+    color: 'rgba(255, 255, 255, 0.7)',
+    textAlign: 'center' as 'center', 
   },
   sectionContentContainer: {
     flexDirection: 'row' as 'row',
@@ -90,21 +101,14 @@ const styles = StyleSheet.create({
     height: 150,
     marginBottom: 20,
     alignItems: 'center' as 'center',
-    padding: 20,
+    padding: 10,
     backgroundColor: 'rgba(10, 15, 20, 1)',
-    borderRadius: 8,
+    borderRadius: 20,
     // overflow: 'hidden' as 'hidden',
     justifyContent: 'center' as 'center',
-    shadowColor: 'pink', // NEED TO LOOK AT THIS
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 10,
   },
   deviceTitle: {
-    color: 'white',
+    color: 'rgba(255, 255, 255, 0.7)',
     fontSize: 18,
     fontWeight: 'bold' as 'bold',
   },

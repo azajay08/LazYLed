@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 15,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: 8,
+    borderRadius: 20,
   },
   sectionTitle: {
     fontSize: 18,
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     alignItems: 'center' as const,
     padding: 8,
     backgroundColor: 'rgba(10, 15, 20, 1)',
-    borderRadius: 8,
+    borderRadius: 10,
   },
   pressableText: {
     fontSize: 15,
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   circle: {
     width: 50,
     height: 50,
-    borderRadius: 30,
+    borderRadius: 15,
     marginBottom: 10,
     justifyContent: 'center' as const,
     alignItems: 'center' as const,
