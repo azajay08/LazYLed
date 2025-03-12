@@ -1,10 +1,24 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import IconWithGradient from './../components/IconWithGradient';
 import useDeviceStore, { Device } from '../stores/deviceStore';
+import { useNavigation } from '@react-navigation/native';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+
+type RootTabParamList = {
+  Home: undefined;
+  Devices: undefined;
+  Settings: undefined;
+};
 
 const HomeScreen: React.FC = () => {
   const { devices } = useDeviceStore();
+  const navigation = useNavigation<BottomTabNavigationProp<RootTabParamList>>();
+
+  const handleDevicePress = () => {
+    navigation.navigate('Devices');
+  };
+
   return (
     <ScrollView style={styles.scrollContainer}>
       <View style={styles.container}>
@@ -14,7 +28,9 @@ const HomeScreen: React.FC = () => {
             This is a section to quickly select effects
           </Text>
         </View>
-        <View style={styles.sectionContainer}>
+        <TouchableOpacity
+          style={styles.sectionContainer}
+          onPress={handleDevicePress}>
           <Text style={styles.sectionTitle}>Devices</Text>
           {Object.keys(devices).length === 0 ? (
             <Text style={styles.sectionText}>
@@ -47,11 +63,16 @@ const HomeScreen: React.FC = () => {
                   <Text style={styles.sectionText}>
                     {device.effectName || 'Off'}
                   </Text>
+                  {device.effectName !== 'LEDs Off' &&
+                    <Text style={styles.sectionText}>
+                      {device.brightness || 0}%
+                    </Text>}
                 </View>
               ))}
             </View>
           )}
-        </View>
+        </TouchableOpacity>
+        
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Favorites</Text>
           <Text style={styles.sectionText}>

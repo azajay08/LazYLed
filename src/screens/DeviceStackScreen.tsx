@@ -11,7 +11,7 @@ import AddDeviceScreen from './AddDeviceScreen';
 import EffectsPage from './EffectsPage';
 
 export type DeviceStackParamList = {
-  DevicePage: undefined;
+  DeviceScreen: undefined;
   AddDevice: undefined;
   ColorPicker: { deviceIp: string };
   EffectsPage: { deviceIp: string };
@@ -24,7 +24,7 @@ const DeviceStackScreen: React.FC = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="DevicePage"
+        name="DeviceScreen"
         component={DeviceScreen}
         options={({ navigation }) => ({
           title: 'Devices',

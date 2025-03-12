@@ -8,8 +8,8 @@ import { DeviceStackParamList } from './DeviceStackScreen';
 import useDevicePolling from '../hooks/devicePolling';
 
 interface DeviceScreenProps {
-  navigation: StackNavigationProp<DeviceStackParamList, 'DevicePage'>;
-  route: RouteProp<DeviceStackParamList, 'DevicePage'>;
+  navigation: StackNavigationProp<DeviceStackParamList, 'DeviceScreen'>;
+  route: RouteProp<DeviceStackParamList, 'DeviceScreen'>;
 }
 
 const DeviceScreen: React.FC<DeviceScreenProps> = ({ navigation }) => {

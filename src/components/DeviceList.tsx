@@ -8,7 +8,7 @@ import SyncToolbar from '../components/SyncToolbar';
 
 interface DeviceListProps {
   devices: Record<string, Device>;
-  navigation: StackNavigationProp<DeviceStackParamList, 'DevicePage'>;
+  navigation: StackNavigationProp<DeviceStackParamList, 'DeviceScreen'>;
 }
 
 const DeviceList: React.FC<DeviceListProps> = memo(({ devices, navigation }) => {

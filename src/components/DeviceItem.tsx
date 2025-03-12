@@ -13,7 +13,7 @@ import { Device } from '../stores/deviceStore';
 interface DeviceItemProps {
   deviceIp: string;
   device: Device;
-  navigation: StackNavigationProp<DeviceStackParamList, 'DevicePage'>;
+  navigation: StackNavigationProp<DeviceStackParamList, 'DeviceScreen'>;
 }
 
 const DeviceItem: React.FC<DeviceItemProps> = memo(({ deviceIp, device, navigation }) => {
