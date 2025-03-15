@@ -1,8 +1,10 @@
+// App.tsx
 import React from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import LinearGradient from 'react-native-linear-gradient';
 
 import SettingsScreen from './screens/SettingsScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -15,10 +17,15 @@ const App: React.FC = () => {
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={{
-          tabBarStyle: {
-            backgroundColor: 'rgb(10,15,20)',
-            borderTopWidth: 0.5,
-          },
+          tabBarStyle: styles.tabBarBase,
+          tabBarBackground: () => (
+            <LinearGradient
+              colors={['rgb(255, 0, 200)', 'cyan', 'rgb(255, 165, 0)']}
+              style={styles.gradientBackground}
+              start={{ x: 0.2, y: 0 }}
+              end={{ x: 0.8, y: 0 }} // Horizontal left to right
+            />
+          ),
           headerStyle: { backgroundColor: 'rgb(10,15,20)' },
           headerTintColor: 'rgb(255, 0, 200)',
           headerTitleAlign: 'left',
@@ -39,8 +46,9 @@ const App: React.FC = () => {
                 style={[
                   focused && {
                     shadowColor: color,
-                    shadowOpacity: 0.9,
+                    shadowOpacity: 1,
                     shadowRadius: 12,
+                    shadowOffset: { width: 0, height: -5 },
                   },
                 ]}
               >
@@ -63,8 +71,9 @@ const App: React.FC = () => {
                 style={[
                   focused && {
                     shadowColor: color,
-                    shadowOpacity: 0.9,
+                    shadowOpacity: 1,
                     shadowRadius: 12,
+                    shadowOffset: { width: 0, height: -5 },
                   },
                 ]}
               >
@@ -87,8 +96,9 @@ const App: React.FC = () => {
                 style={[
                   focused && {
                     shadowColor: color,
-                    shadowOpacity: 0.9,
+                    shadowOpacity: 1,
                     shadowRadius: 12,
+                    shadowOffset: { width: 0, height: -5 },
                   },
                 ]}
               >
@@ -109,8 +119,16 @@ const App: React.FC = () => {
 const styles = StyleSheet.create({
   tabBarBase: {
     backgroundColor: 'rgb(10,15,20)',
-    borderTopWidth: 1.5,
+    borderTopWidth: 0, // Gradient replaces border
     shadowOpacity: 0.1,
+    elevation: 8,
+  },
+  gradientBackground: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: 2, // Thin gradient strip
   },
 });
 
@@ -118,7 +136,7 @@ const focusedStyle = (color: string): ViewStyle => ({
   borderTopColor: color,
   shadowColor: color,
   shadowOffset: { width: 0, height: 0 },
-  shadowOpacity: 1,
+  shadowOpacity: 0.5,
   shadowRadius: 18,
   elevation: 8,
 });

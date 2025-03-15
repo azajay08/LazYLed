@@ -93,12 +93,17 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: 'rgb(10,15,20)',
+    
   },
   sectionContainer: {
     marginBottom: 20,
     padding: 15,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     borderRadius: 20,
+    shadowColor: 'black',
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    shadowOffset: { width: 10, height: 10 },
   },
   sectionTitle: {
     fontSize: 18,

@@ -46,6 +46,7 @@ const DropdownComponent: React.FC<DropdownComponentProps> = ({ deviceIp }) => {
           selectedTextStyle={styles.selectedTextStyle}
           containerStyle={styles.dropdownContainer}
           itemTextStyle={styles.itemTextStyle}
+          itemContainerStyle={{ borderRadius: 14, }}
           activeColor="rgba(0, 213, 255, 0.64)"
           style={styles.dropdown}
           value={selectedEffect}
@@ -71,6 +72,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(10, 15, 20, 1)',
     borderWidth: 0.6,
     borderColor: 'cyan',
+    shadowColor: 'black',
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    shadowOffset: { width: 10, height: 10 },
   },
   dropdownContainer: {
     backgroundColor: 'rgba(10, 15, 20, 1)',

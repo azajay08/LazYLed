@@ -37,7 +37,7 @@ const BrightnessSlider: React.FC<BrightnessSliderProps> = ({ deviceIp }) => {
     <View style={styles.container}>
       <MaterialCommunityIcons name="lightbulb-on-outline" size={20} color={'cyan'} style={{ padding: 5 }} />
       <Slider
-        style={{ width: 250, height: 30 }}
+        style={styles.slider}
         value={displayBrightness ?? 0} // Default to 100 if undefined
         onValueChange={handleSliderChange}
         tapToSeek={true}
@@ -48,7 +48,7 @@ const BrightnessSlider: React.FC<BrightnessSliderProps> = ({ deviceIp }) => {
         maximumTrackTintColor="rgb(10,15,20)"
         thumbTintColor={'cyan'}
       />
-      <MaterialCommunityIcons name="lightbulb-on" size={30} color={'cyan'} style={{ padding: 5 }} />
+      <MaterialCommunityIcons name="lightbulb-on" size={30} color={'cyan'} style={styles.onBulb} />
     </View>
   );
 };
@@ -59,6 +59,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center' as const,
     alignItems: 'center' as const,
     padding: 20,
+  },
+  slider: {
+    width: 250,
+    height: 30,
+    shadowColor: 'cyan',
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 0 },
+  },
+  onBulb: {
+    padding: 5,
+    shadowColor: 'cyan',
+    shadowOpacity: 1,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 0 },
   },
 });
 

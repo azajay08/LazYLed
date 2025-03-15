@@ -12,7 +12,7 @@ interface IconWithGradientProps {
 }
 
 const IconWithGradient: React.FC<IconWithGradientProps> = ({ iconName, size, selectedColor, effect }) => {
-  const gradientColors = ['#ff8700', '#00fff3', '#f000ff'];
+  const gradientColors = ['#ff8700', '#f000ff', '#00fff3'];
   const solidColorGradient = [selectedColor, '#ffffff', selectedColor];
 
   if (!effect || effect === "LEDs Off" || effect === "Unavailable") {
@@ -52,8 +52,8 @@ const IconWithGradient: React.FC<IconWithGradientProps> = ({ iconName, size, sel
     >
       <LinearGradient
         colors={gradientColors}
-        start={{ x: 0.1, y: 0.25 }}
-        end={{ x: 0, y: 0.75 }}
+        start={{ x: 0.12, y: 0.15 }}
+        end={{ x: 0, y: 0.8 }}
         style={styles.gradient}
       />
     </MaskedView>

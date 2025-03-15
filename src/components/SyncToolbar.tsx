@@ -75,7 +75,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 15,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    borderRadius: 8,
+    borderRadius: 20,
+    shadowColor: 'black',
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    shadowOffset: { width: 10, height: 10 },
   },
   syncToolContainer: {
     flexDirection: 'row' as const,

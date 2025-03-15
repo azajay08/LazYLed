@@ -20,7 +20,7 @@ const OnOffButton: React.FC<OnOffButtonProps> = ({ isOnOff, deviceIp }) => {
     <View style={styles.container}>
       <TouchableOpacity
         onPress={handlePress}
-        style={[styles.pressableCircle, isOff ? styles.off : styles.on]}
+        style={[styles.pressableSquare, isOff ? styles.off : styles.on]}
       >
         <MaterialCommunityIcons
           name="power"
@@ -38,7 +38,11 @@ const styles = StyleSheet.create({
     alignItems: 'center' as const,
     marginBottom: 5,
   },
-  pressableCircle: {
+  pressableSquare: {
+    shadowColor: 'black',
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    shadowOffset: { width: 5, height: 5 },
     width: 50,
     height: 50,
     justifyContent: 'center' as const,
@@ -48,6 +52,7 @@ const styles = StyleSheet.create({
     borderColor: 'cyan',
   },
   off: {
+    backgroundColor: 'rgba(10, 15, 20, 1)',
     borderColor: 'black',
   },
   on: {

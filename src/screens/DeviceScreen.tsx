@@ -1,3 +1,4 @@
+// screens/DeviceScreen.tsx
 import React, { useState, useCallback } from 'react';
 import { ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import useDeviceStore from '../stores/deviceStore';
@@ -18,21 +19,38 @@ const DeviceScreen: React.FC<DeviceScreenProps> = ({ navigation }) => {
 
   useDevicePolling();
 
+  const withTimeout = (promise: Promise<any>, ms: number, deviceIP: string) => {
+    const timeout = new Promise((_, reject) =>
+      setTimeout(() => {
+        const error = new Error(`Timeout after ${ms}ms for ${deviceIP}`);
+        // console.error(error.message); // Avoid the timeout error message
+        reject(error);
+      }, ms)
+    );
+    return Promise.race([promise, timeout]);
+  };
+
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     console.log('Starting manual refresh at:', new Date().toISOString());
     try {
+      const deviceIPs = Object.keys(devices);
+      if (deviceIPs.length === 0) {
+        console.log('No devices to refresh');
+        return;
+      }
+
       const results = await Promise.all(
-        Object.keys(devices).map(async (deviceIP) => {
+        deviceIPs.map(async (deviceIP) => {
           try {
             await Promise.all([
-              fetchDeviceData(deviceIP),
-              fetchDeviceStatus(deviceIP),
+              withTimeout(fetchDeviceData(deviceIP), 5000, deviceIP),
+              withTimeout(fetchDeviceStatus(deviceIP), 5000, deviceIP),
             ]);
-            console.log(`Refreshed ${deviceIP} successfully`);
+            console.log(`Refreshed manually ${deviceIP} successfully`);
             return true;
           } catch (error) {
-            console.error(`Refresh failed for ${deviceIP}:`, (error as Error).message);
+            console.error(`Manual Refresh failed for ${deviceIP}:`, (error as Error).message);
             return false;
           }
         })
@@ -55,8 +73,8 @@ const DeviceScreen: React.FC<DeviceScreenProps> = ({ navigation }) => {
           refreshing={refreshing}
           onRefresh={onRefresh}
           tintColor="cyan"
-          title="Refreshing..."
-          titleColor="cyan"
+          // title="Refreshing..."
+          // titleColor="cyan"
         />
       }
     >

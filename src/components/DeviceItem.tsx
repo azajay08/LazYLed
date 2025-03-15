@@ -21,28 +21,28 @@ const DeviceItem: React.FC<DeviceItemProps> = memo(({ deviceIp, device, navigati
   const isEffectRunning = device.effectName && device.effectName !== "Solid Color" && device.effectName !== "LEDs Off" && device.effectName !== "Unavailable";
   const isDeviceOn = device.effectName && device.effectName !== "LEDs Off" && device.effectName !== "Unavailable";
 
-  const renderCircle = () => {
+  const rendersquare = () => {
     if (isEffectRunning) {
-      const gradientColors=['#ff8700', '#00fff3', '#f000ff']
+      const gradientColors=['#ff8700', '#f000ff', '#00fff3'];
       return (
         <LinearGradient
           colors={gradientColors}
-          start={{ x: 0.25, y: 0.25 }}
-          end={{ x: 0.75, y: 0.75 }}
-          style={styles.circle}
+          start={{ x: 0.2, y: 0.2 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.square}
         />
       );
     }
     if (!isDeviceOn) {
       return (
         <View
-          style={[styles.circle, { backgroundColor: '#000000' }]}
+          style={[styles.square, { backgroundColor: '#000000' }]}
         />
       );
     }
     return (
       <View
-        style={[styles.circle, { backgroundColor: device.color || '#000000' }]}
+        style={[styles.square, { backgroundColor: device.color || '#000000' }]}
       />
     );
   };
@@ -53,7 +53,7 @@ const DeviceItem: React.FC<DeviceItemProps> = memo(({ deviceIp, device, navigati
       <Text style={styles.sectionContent}>Effect: {device.effectName || 'None'}</Text>
 
       <TouchableOpacity onPress={() => navigation.navigate('ColorPicker', { deviceIp })}>
-        {renderCircle()}
+        {rendersquare()}
       </TouchableOpacity>
 
       <View style={styles.effectContainer}>
@@ -93,6 +93,10 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     borderRadius: 20,
+    // shadowColor: 'black',
+    // shadowOpacity: 0.8,
+    // shadowRadius: 10,
+    // shadowOffset: { width: 10, height: 10 },
   },
   sectionTitle: {
     fontSize: 18,
@@ -117,6 +121,10 @@ const styles = StyleSheet.create({
     padding: 8,
     backgroundColor: 'rgba(10, 15, 20, 1)',
     borderRadius: 10,
+    shadowColor: 'black',
+    shadowOpacity: 0.8,
+    shadowRadius: 10,
+    shadowOffset: { width: 10, height: 10 },
   },
   pressableText: {
     fontSize: 15,
@@ -125,7 +133,7 @@ const styles = StyleSheet.create({
   icon: {
     marginLeft: -2,
   },
-  circle: {
+  square: {
     width: 50,
     height: 50,
     borderRadius: 15,

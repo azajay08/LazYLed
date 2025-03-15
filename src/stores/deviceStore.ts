@@ -225,7 +225,7 @@ const useDeviceStore = create<DeviceState>((set, get) => ({
               ...state.devices[ip],
               lastState: {
                 selectedColor: hsvToHex(color.h, color.s, color.v),
-                effectNumber: 16, // FUNC_COUNT - NEEDS TO BE UPDATED
+                effectNumber: 20, // FUNC_COUNT - NEEDS TO BE UPDATED
                 effectName: "Solid Color",
                 brightness: state.devices[ip].brightness,
                 customEffect: undefined,
