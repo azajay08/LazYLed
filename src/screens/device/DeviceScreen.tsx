@@ -1,4 +1,3 @@
-// screens/DeviceScreen.tsx
 import React, { useState, useCallback } from 'react';
 import { ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import useDeviceStore from '../../stores/deviceStore';

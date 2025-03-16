@@ -1,4 +1,3 @@
-// App.tsx
 import React from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -23,7 +22,7 @@ const App: React.FC = () => {
               colors={['rgb(255, 0, 200)', 'cyan', 'rgb(255, 165, 0)']}
               style={styles.gradientBackground}
               start={{ x: 0.2, y: 0 }}
-              end={{ x: 0.8, y: 0 }} // Horizontal left to right
+              end={{ x: 0.8, y: 0 }}
             />
           ),
           headerStyle: { backgroundColor: 'rgb(10,15,20)' },
@@ -119,7 +118,7 @@ const App: React.FC = () => {
 const styles = StyleSheet.create({
   tabBarBase: {
     backgroundColor: 'rgb(10,15,20)',
-    borderTopWidth: 0, // Gradient replaces border
+    borderTopWidth: 0,
     shadowOpacity: 0.1,
     elevation: 8,
   },

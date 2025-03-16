@@ -38,7 +38,7 @@ const BrightnessSlider: React.FC<BrightnessSliderProps> = ({ deviceIp }) => {
       <MaterialCommunityIcons name="lightbulb-on-outline" size={20} color={'cyan'} style={{ padding: 5 }} />
       <Slider
         style={styles.slider}
-        value={displayBrightness ?? 0} // Default to 100 if undefined
+        value={displayBrightness ?? 0} // Default to 0 if undefined
         onValueChange={handleSliderChange}
         tapToSeek={true}
         minimumValue={0}

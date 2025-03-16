@@ -1,4 +1,3 @@
-// screens/HomeScreen/index.tsx
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import useDeviceStore from '../../stores/deviceStore';

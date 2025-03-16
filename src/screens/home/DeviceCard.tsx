@@ -1,4 +1,3 @@
-// screens/HomeScreen/DeviceCard.tsx
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import IconWithGradient from '../../components/IconWithGradient';

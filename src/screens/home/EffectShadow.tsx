@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 14,
     elevation: 5,
-    borderRadius: 10, // Optional: softer edges
+    borderRadius: 10,
   },
   topLeft: {
     top: 15,
