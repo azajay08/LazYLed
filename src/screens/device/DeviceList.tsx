@@ -1,10 +1,10 @@
 import React, { memo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { DeviceStackParamList } from '../screens/DeviceStackScreen';
-import { Device } from '../stores/deviceStore';
+import { DeviceStackParamList } from './DeviceStackScreen';
+import { Device } from '../../stores/deviceStore';
 import DeviceItem from './DeviceItem';
-import SyncToolbar from '../components/SyncToolbar';
+import SyncToolbar from './deviceComponents/SyncToolbar';
 
 interface DeviceListProps {
   devices: Record<string, Device>;

@@ -2,8 +2,8 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Slider from '@react-native-community/slider';
-import useDeviceStore from '../stores/deviceStore';
-import { debounce } from '../utils/debounce';
+import useDeviceStore from '../../../stores/deviceStore';
+import { debounce } from '../../../utils/debounce';
 
 interface BrightnessSliderProps {
   deviceIp: string;

@@ -2,13 +2,13 @@ import React, { memo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
-import useDeviceStore from '../stores/deviceStore';
-import OnOffButton from './OnOffButton';
-import DropdownComponent from './DropdownComponent';
-import BrightnessSlider from './BrightnessSlider';
+import useDeviceStore from '../../stores/deviceStore';
+import OnOffButton from './deviceComponents/OnOffButton';
+import DropdownComponent from './deviceComponents/DropdownComponent';
+import BrightnessSlider from './deviceComponents/BrightnessSlider';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { DeviceStackParamList } from '../screens/DeviceStackScreen';
-import { Device } from '../stores/deviceStore';
+import { DeviceStackParamList } from './DeviceStackScreen';
+import { Device } from '../../stores/deviceStore';
 
 interface DeviceItemProps {
   deviceIp: string;

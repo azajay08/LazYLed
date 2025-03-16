@@ -2,13 +2,13 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import useDeviceStore from '../stores/deviceStore';
+import useDeviceStore from '../../stores/deviceStore';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import ColorPickerScreen from './ColorPickerScreen';
 import DeviceScreen from './DeviceScreen';
 import AddDeviceScreen from './AddDeviceScreen';
-import EffectsPage from './EffectsPage';
+import EffectsPage from './EffectsScreen';
 
 export type DeviceStackParamList = {
   DeviceScreen: undefined;

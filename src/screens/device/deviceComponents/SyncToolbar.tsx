@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import useDeviceStore from '../stores/deviceStore';
+import useDeviceStore from '../../../stores/deviceStore';
 
 const SyncToolbar: React.FC = () => {
   const { syncMode, toggleSyncMode } = useDeviceStore();

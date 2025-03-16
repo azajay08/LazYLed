@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import useDeviceStore from './../stores/deviceStore';
+import useDeviceStore from '../../stores/deviceStore';
 import { OFFICE_SHELF_IP, PEG_BOARD_IP } from '@env';
 
 const AddDeviceScreen: React.FC = () => {

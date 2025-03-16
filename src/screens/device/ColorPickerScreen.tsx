@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
-import useDeviceStore from '../stores/deviceStore';
-import { hexToHsv } from '../utils/hexToHsv';
-import { debounce } from '../utils/debounce';
-import LedStrip from '../components/LedStrip';
+import useDeviceStore from '../../stores/deviceStore';
+import { hexToHsv } from '../../utils/hexToHsv';
+import { debounce } from '../../utils/debounce';
+import LedStrip from './deviceComponents/LedStrip';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { DeviceStackParamList } from './DeviceStackScreen';

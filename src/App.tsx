@@ -6,9 +6,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
 
-import SettingsScreen from './screens/SettingsScreen';
-import HomeScreen from './screens/HomeScreen';
-import DeviceStackScreen from './screens/DeviceStackScreen';
+import SettingsScreen from './screens/settings/SettingsScreen';
+import HomeScreen from './screens/home/HomeScreen';
+import DeviceStackScreen from './screens/device/DeviceStackScreen';
 
 const Tab = createBottomTabNavigator();
 

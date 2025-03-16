@@ -1,12 +1,12 @@
 // screens/DeviceScreen.tsx
 import React, { useState, useCallback } from 'react';
 import { ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import useDeviceStore from '../stores/deviceStore';
-import DeviceList from '../components/DeviceList';
+import useDeviceStore from '../../stores/deviceStore';
+import DeviceList from './DeviceList';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { DeviceStackParamList } from './DeviceStackScreen';
-import useDevicePolling from '../hooks/devicePolling';
+import useDevicePolling from '../../hooks/devicePolling';
 
 interface DeviceScreenProps {
   navigation: StackNavigationProp<DeviceStackParamList, 'DeviceScreen'>;

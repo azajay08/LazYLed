@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
 import { StyleSheet, View, Text } from 'react-native';
-import useDeviceStore from '../stores/deviceStore';
+import useDeviceStore from '../../../stores/deviceStore';
 
 interface DropdownComponentProps {
   deviceIp: string;

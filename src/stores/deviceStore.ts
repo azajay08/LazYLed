@@ -41,6 +41,7 @@ export interface Device {
   brightness: number;
   deviceName: string;
   roomName: string;
+  effectCount: number;
   effectsList: Effect[];
   lastState?: LastState;
 }
@@ -59,6 +60,8 @@ interface DeviceState {
   setCustomEffect: (deviceIP: string, functionNumber: number, speed?: number, colors?: HsvColor[]) => Promise<void>;
   cycleEffect: (deviceIP: string) => Promise<void>;
   toggleOnOff: (deviceIP: string) => Promise<void>;
+  setDeviceName: (deviceIP: string, name: string) => void;
+  removeDevice: (deviceIP: string) => void;
 }
 
 const useDeviceStore = create<DeviceState>((set, get) => ({
@@ -79,6 +82,7 @@ const useDeviceStore = create<DeviceState>((set, get) => ({
           effectName: "Unknown",
           brightness: 0,
           deviceName: "Unknown",
+          effectCount: 0,
           roomName: "Unknown",
           effectsList: [],
         },
@@ -89,10 +93,27 @@ const useDeviceStore = create<DeviceState>((set, get) => ({
     await get().fetchDeviceStatus(deviceIP);
   },
 
+  setDeviceName: (deviceIP: string, name: string) => {
+    set((state) => ({
+      devices: {
+        ...state.devices,
+        [deviceIP]: { ...state.devices[deviceIP], deviceName: name },
+      },
+    }));
+  },
+
+  removeDevice: (deviceIP: string) => {
+    set((state) => {
+      const newDevices = { ...state.devices };
+      delete newDevices[deviceIP];
+      return { devices: newDevices };
+    });
+  },
+
   fetchDeviceData: async (deviceIP: string, retries: number = 3) => {
     for (let attempt = 1; attempt <= retries; attempt++) {
       try {
-        const response = await axios.get<{ effects: Effect[]; deviceName?: string; roomName?: string }>(
+        const response = await axios.get<{ effects: Effect[]; deviceName?: string; roomName?: string; functionCount?: number }>(
           `http://${deviceIP}/ledData`
         );
         set((state) => ({
@@ -103,6 +124,7 @@ const useDeviceStore = create<DeviceState>((set, get) => ({
               effectsList: response.data.effects || [],
               deviceName: response.data.deviceName || "Unknown",
               roomName: response.data.roomName || "Unknown",
+              effectCount: response.data.functionCount || 0,
             },
           },
         }));
@@ -225,7 +247,7 @@ const useDeviceStore = create<DeviceState>((set, get) => ({
               ...state.devices[ip],
               lastState: {
                 selectedColor: hsvToHex(color.h, color.s, color.v),
-                effectNumber: 20, // FUNC_COUNT - NEEDS TO BE UPDATED
+                effectNumber: state.devices[ip].effectCount, // FUNC_COUNT - NEEDS TO BE UPDATED
                 effectName: "Solid Color",
                 brightness: state.devices[ip].brightness,
                 customEffect: undefined,
