@@ -84,8 +84,8 @@ const SettingsScreen: React.FC = () => {
           <Switch
             value={syncMode}
             onValueChange={toggleSyncMode}
-            trackColor={{ false: '#767577', true: '#81b0ff' }}
-            thumbColor={syncMode ? '#f4f3f4' : '#f4f3f4'}
+            trackColor={{ false: 'black', true: 'rgb(255, 165, 0)' }}
+            thumbColor={syncMode ? 'black' : 'black'}
           />
         </View>
       </View>

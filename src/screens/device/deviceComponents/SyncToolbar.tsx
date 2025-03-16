@@ -4,7 +4,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import useDeviceStore from '../../../stores/deviceStore';
 
 const SyncToolbar: React.FC = () => {
-  const { syncMode, toggleSyncMode } = useDeviceStore();
+  const { syncMode, toggleSyncMode } = useDeviceStore(); // Need to add sync mode sync from other components
   const [selected, setSelected] = useState(false);
 
   const handleSyncAllPress = () => {
