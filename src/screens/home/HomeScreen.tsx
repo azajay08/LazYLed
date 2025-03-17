@@ -23,7 +23,7 @@ const HomeScreen: React.FC = () => {
     <ScrollView style={styles.scrollContainer}>
       <View style={styles.container}>
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Quick Select</Text>
+          <Text style={styles.sectionTitle}>Quick Select (Coming Soon)</Text>
           <Text style={styles.sectionText}>
             This is a section to quickly select effects
           </Text>
@@ -47,7 +47,7 @@ const HomeScreen: React.FC = () => {
           )}
         </TouchableOpacity>
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Favorites</Text>
+          <Text style={styles.sectionTitle}>Favorites (Coming Soon)</Text>
           <Text style={styles.sectionText}>
             A favorite section that shows favorite colors or effects. You have
             no favorites yet.

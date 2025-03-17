@@ -28,8 +28,8 @@ export interface Effect {
   functionNumber: number;
   speedParams: number;
   colorParams: number;
-  description: string;
-  sampleGradient: string[];
+  description?: string;
+  sampleGradient?: string[];
 }
 
 export interface Device {
@@ -122,7 +122,7 @@ const useDeviceStore = create<DeviceState>((set, get) => ({
             [deviceIP]: {
               ...state.devices[deviceIP],
               effectsList: response.data.effects || [],
-              deviceName: response.data.deviceName || "Unknown",
+              // deviceName: response.data.deviceName || "Unknown",
               roomName: response.data.roomName || "Unknown",
               effectCount: response.data.functionCount || 0,
             },
@@ -247,7 +247,7 @@ const useDeviceStore = create<DeviceState>((set, get) => ({
               ...state.devices[ip],
               lastState: {
                 selectedColor: hsvToHex(color.h, color.s, color.v),
-                effectNumber: state.devices[ip].effectCount, // FUNC_COUNT - NEEDS TO BE UPDATED
+                effectNumber: state.devices[ip].effectCount,
                 effectName: "Solid Color",
                 brightness: state.devices[ip].brightness,
                 customEffect: undefined,

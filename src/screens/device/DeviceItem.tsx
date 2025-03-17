@@ -65,7 +65,7 @@ const DeviceItem: React.FC<DeviceItemProps> = memo(({ deviceIp, device, navigati
           <Text style={styles.pressableText}>Cycle Effect</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('EffectsPage', { deviceIp })}
+          onPress={() => navigation.navigate('EffectPickerScreen', { deviceIp })}
           style={styles.pressableContainer}
         >
           <Text style={styles.pressableText}>Effects</Text>

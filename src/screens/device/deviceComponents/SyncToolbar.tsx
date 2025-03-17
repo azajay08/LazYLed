@@ -5,17 +5,15 @@ import useDeviceStore from '../../../stores/deviceStore';
 
 const SyncToolbar: React.FC = () => {
   const { syncMode, toggleSyncMode } = useDeviceStore(); // Need to add sync mode sync from other components
-  const [selected, setSelected] = useState(false);
+  // const [selected, setSelected] = useState(false);
 
   const handleSyncAllPress = () => {
     toggleSyncMode();
-    setSelected(!selected);
   };
 
   const handleDesyncAllPress = () => {
-    if (selected) {
+    if (syncMode) {
       toggleSyncMode();
-      setSelected(false);
     }
   };
 
@@ -34,20 +32,20 @@ const SyncToolbar: React.FC = () => {
         <TouchableOpacity
           style={[
             styles.syncToolContainer,
-            selected && styles.selectedSyncToolContainer,
+            syncMode && styles.selectedSyncToolContainer,
           ]}
           onPress={handleSyncAllPress}
         >
           <MaterialIcons
             name="sync-lock"
             size={30}
-            color={selected ? 'rgb(10,15,20)' : 'cyan'}
+            color={syncMode ? 'rgb(10,15,20)' : 'cyan'}
             style={styles.icon}
           />
           <Text
             style={[
               styles.syncTooltext,
-              selected && styles.selectedSyncTooltext,
+              syncMode && styles.selectedSyncTooltext,
             ]}
           >
             Sync All

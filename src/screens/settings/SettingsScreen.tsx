@@ -78,7 +78,7 @@ const SettingsScreen: React.FC = () => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>General Settings</Text>
+        <Text style={styles.sectionTitle}>General Settings (Coming Soon)</Text>
         <View style={styles.settingItem}>
           <Text style={styles.settingText}>Sync Mode</Text>
           <Switch

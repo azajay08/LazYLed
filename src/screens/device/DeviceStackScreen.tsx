@@ -1,25 +1,27 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import useDeviceStore from '../../stores/deviceStore';
+import useDeviceStore, { Effect } from '../../stores/deviceStore';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import ColorPickerScreen from './ColorPickerScreen';
 import DeviceScreen from './DeviceScreen';
 import AddDeviceScreen from './AddDeviceScreen';
-import EffectsPage from './EffectsScreen';
+import EffectsScreen from './EffectsScreen';
+import EffectPickerScreen from './EffectPickerScreen';
 
 export type DeviceStackParamList = {
   DeviceScreen: undefined;
   AddDevice: undefined;
   ColorPicker: { deviceIp: string };
-  EffectsPage: { deviceIp: string };
+  EffectPickerScreen: { deviceIp: string };
+  EffectsPage: { deviceIp: string; selectedEffect: Effect };
 };
 
 const Stack = createStackNavigator<DeviceStackParamList>();
 
 const DeviceStackScreen: React.FC = () => {
-  const {devices} = useDeviceStore();
+  const { devices } = useDeviceStore();
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -59,16 +61,24 @@ const DeviceStackScreen: React.FC = () => {
         component={ColorPickerScreen}
         options={({ route }) => ({
           title: devices[route.params.deviceIp]?.deviceName || 'Unnamed Device',
-        
           headerStyle: { backgroundColor: 'rgb(10,15,20)' },
           headerTintColor: 'cyan',
         })}
       />
       <Stack.Screen
-        name="EffectsPage"
-        component={EffectsPage}
+        name="EffectPickerScreen"
+        component={EffectPickerScreen}
         options={{
-          title: 'Effects',
+          title: '',
+          headerStyle: { backgroundColor: 'rgb(10,15,20)' },
+          headerTintColor: 'cyan',
+        }}
+      />
+      <Stack.Screen
+        name="EffectsPage"
+        component={EffectsScreen}
+        options={{
+          title: '',
           headerStyle: { backgroundColor: 'rgb(10,15,20)' },
           headerTintColor: 'cyan',
         }}
