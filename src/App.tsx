@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import SplashScreen from './screens/SplashScreen';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -12,7 +13,9 @@ import DeviceStackScreen from './screens/device/DeviceStackScreen';
 const Tab = createBottomTabNavigator();
 
 const App: React.FC = () => {
-  return (
+  const [isReady, setIsReady] = useState(false);
+
+  return (isReady ? 
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={{
@@ -112,7 +115,7 @@ const App: React.FC = () => {
         />
       </Tab.Navigator>
     </NavigationContainer>
-  );
+    : <SplashScreen onFinish={() => setIsReady(true)} />);
 };
 
 const styles = StyleSheet.create({

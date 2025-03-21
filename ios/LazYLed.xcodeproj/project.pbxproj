@@ -28,12 +28,22 @@
 		2CD325782D777389007D6DAA /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2CD325542D777389007D6DAA /* AntDesign.ttf */; };
 		2CD325792D777389007D6DAA /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2CD325562D777389007D6DAA /* EvilIcons.ttf */; };
 		2CD3257A2D777389007D6DAA /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2CD325602D777389007D6DAA /* Foundation.ttf */; };
+		41EF6BB14F4741B9AADF6F72 /* Orbitron-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D0003F14F16D483AA494D077 /* Orbitron-ExtraBold.ttf */; };
+		499EC6DC960A46E1811F8903 /* TrainOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6CE3A568830D4341BA19AC0C /* TrainOne-Regular.ttf */; };
+		5F4DF6CB287543CCABAD7FD1 /* lazyimage.png in Resources */ = {isa = PBXBuildFile; fileRef = DA614F86709F49E6A903EB39 /* lazyimage.png */; };
+		6F78C21B69C74B8F95E48064 /* Orbitron-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 50B99F349C1045C29A8B5378 /* Orbitron-Medium.ttf */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
+		78AE3F9E20E5491FBD2FD661 /* Orbitron-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 33839AE936FC4F548582E4BF /* Orbitron-Bold.ttf */; };
+		7E300153F0D64D2CBCD0D820 /* Orbitron-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0341E8879C4A447B98A577D9 /* Orbitron-SemiBold.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		84751B393013D4F31012C51F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
+		991AC2DF4403457C884996AF /* temp.svg in Resources */ = {isa = PBXBuildFile; fileRef = E36FC69842FC49F8B53A59A8 /* temp.svg */; };
+		AB17AB20B5C64F96BE790D0E /* Orbitron-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8BD731AD61DC4FBA8FE6D598 /* Orbitron-Regular.ttf */; };
+		CBE298E318344E58A4F7D321 /* Orbitron-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4DC25A2503C40BEB5B170D2 /* Orbitron-Black.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0341E8879C4A447B98A577D9 /* Orbitron-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Orbitron-SemiBold.ttf"; path = "../assets/fonts/Orbitron-SemiBold.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* LazYLed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LazYLed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = LazYLed/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = LazYLed/Info.plist; sourceTree = "<group>"; };
@@ -57,11 +67,19 @@
 		2CD325642D777389007D6DAA /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
 		2CD325652D777389007D6DAA /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = SimpleLineIcons.ttf; sourceTree = "<group>"; };
 		2CD325662D777389007D6DAA /* Zocial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Zocial.ttf; sourceTree = "<group>"; };
+		33839AE936FC4F548582E4BF /* Orbitron-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Orbitron-Bold.ttf"; path = "../assets/fonts/Orbitron-Bold.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-LazYLed.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LazYLed.debug.xcconfig"; path = "Target Support Files/Pods-LazYLed/Pods-LazYLed.debug.xcconfig"; sourceTree = "<group>"; };
+		50B99F349C1045C29A8B5378 /* Orbitron-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Orbitron-Medium.ttf"; path = "../assets/fonts/Orbitron-Medium.ttf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-LazYLed.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LazYLed.release.xcconfig"; path = "Target Support Files/Pods-LazYLed/Pods-LazYLed.release.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-LazYLed.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LazYLed.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6CE3A568830D4341BA19AC0C /* TrainOne-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "TrainOne-Regular.ttf"; path = "../assets/fonts/TrainOne-Regular.ttf"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = LazYLed/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = LazYLed/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8BD731AD61DC4FBA8FE6D598 /* Orbitron-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Orbitron-Regular.ttf"; path = "../assets/fonts/Orbitron-Regular.ttf"; sourceTree = "<group>"; };
+		B4DC25A2503C40BEB5B170D2 /* Orbitron-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Orbitron-Black.ttf"; path = "../assets/fonts/Orbitron-Black.ttf"; sourceTree = "<group>"; };
+		D0003F14F16D483AA494D077 /* Orbitron-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Orbitron-ExtraBold.ttf"; path = "../assets/fonts/Orbitron-ExtraBold.ttf"; sourceTree = "<group>"; };
+		DA614F86709F49E6A903EB39 /* lazyimage.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = lazyimage.png; path = ../assets/images/lazyimage.png; sourceTree = "<group>"; };
+		E36FC69842FC49F8B53A59A8 /* temp.svg */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = temp.svg; path = ../assets/images/temp.svg; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -125,6 +143,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		5977123F578444EABD916313 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E36FC69842FC49F8B53A59A8 /* temp.svg */,
+				6CE3A568830D4341BA19AC0C /* TrainOne-Regular.ttf */,
+				DA614F86709F49E6A903EB39 /* lazyimage.png */,
+				B4DC25A2503C40BEB5B170D2 /* Orbitron-Black.ttf */,
+				33839AE936FC4F548582E4BF /* Orbitron-Bold.ttf */,
+				D0003F14F16D483AA494D077 /* Orbitron-ExtraBold.ttf */,
+				50B99F349C1045C29A8B5378 /* Orbitron-Medium.ttf */,
+				8BD731AD61DC4FBA8FE6D598 /* Orbitron-Regular.ttf */,
+				0341E8879C4A447B98A577D9 /* Orbitron-SemiBold.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -140,6 +174,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				5977123F578444EABD916313 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -245,6 +280,15 @@
 				2CD325792D777389007D6DAA /* EvilIcons.ttf in Resources */,
 				2CD3257A2D777389007D6DAA /* Foundation.ttf in Resources */,
 				84751B393013D4F31012C51F /* PrivacyInfo.xcprivacy in Resources */,
+				991AC2DF4403457C884996AF /* temp.svg in Resources */,
+				499EC6DC960A46E1811F8903 /* TrainOne-Regular.ttf in Resources */,
+				5F4DF6CB287543CCABAD7FD1 /* lazyimage.png in Resources */,
+				CBE298E318344E58A4F7D321 /* Orbitron-Black.ttf in Resources */,
+				78AE3F9E20E5491FBD2FD661 /* Orbitron-Bold.ttf in Resources */,
+				41EF6BB14F4741B9AADF6F72 /* Orbitron-ExtraBold.ttf in Resources */,
+				6F78C21B69C74B8F95E48064 /* Orbitron-Medium.ttf in Resources */,
+				AB17AB20B5C64F96BE790D0E /* Orbitron-Regular.ttf in Resources */,
+				7E300153F0D64D2CBCD0D820 /* Orbitron-SemiBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

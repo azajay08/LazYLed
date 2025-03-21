@@ -15,7 +15,7 @@ const IconWithGradient: React.FC<IconWithGradientProps> = ({ iconName, size, sel
   const gradientColors = ['#ff8700', '#f000ff', '#00fff3'];
   const solidColorGradient = [selectedColor, '#ffffff', selectedColor];
 
-  if (!effect || effect === "LEDs Off" || effect === "Unavailable") {
+  if (!effect || effect === "LEDs Off" || effect === "Unavailable" || effect === "Unknown") {
     return <MaterialCommunityIcons name={iconName} size={size} color="rgba(255, 255, 255, 0.7)" />;
   }
   if (effect === "Solid Color") {
