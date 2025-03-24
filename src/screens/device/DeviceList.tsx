@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { DeviceStackParamList } from './DeviceStackScreen';
 import { Device } from '../../stores/deviceStore';
-import DeviceItem from './DeviceItem';
+import DeviceCard from './DeviceCard';
 import SyncToolbar from './deviceComponents/SyncToolbar';
 
 interface DeviceListProps {
@@ -21,7 +21,7 @@ const DeviceList: React.FC<DeviceListProps> = memo(({ devices, navigation }) => 
         </View>
       ) : (
         Object.entries(devices).map(([deviceIp, device]) => (
-          <DeviceItem key={deviceIp} deviceIp={deviceIp} device={device} navigation={navigation} />
+          <DeviceCard key={deviceIp} deviceIp={deviceIp} device={device} navigation={navigation} />
         ))
       )}
     </View>

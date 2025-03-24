@@ -38,8 +38,8 @@ const EffectShadow: React.FC = () => {
 
 const styles = StyleSheet.create({
   shadowSquare: {
-    width: 100,
-    height: 100,
+    width: '70%',
+    height: '70%',
     position: 'absolute',
     shadowOpacity: 1,
     shadowRadius: 14,

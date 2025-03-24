@@ -78,7 +78,7 @@ const useDeviceStore = create<DeviceState>((set, get) => ({
           status: "Loading...",
           selectedColor: "#FFFFFF",
           color: "Unknown",
-          effectNumber: "Unknown",
+          effectNumber: 0,
           effectName: "Unknown",
           brightness: 0,
           deviceName: "Unknown",

@@ -122,12 +122,14 @@ const styles = StyleSheet.create({
   section: {
     margin: 20,
     padding: 15,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    backgroundColor: 'rgb(22, 24, 29)',
     borderRadius: 20,
     shadowColor: 'black',
     shadowOpacity: 0.8,
     shadowRadius: 10,
     shadowOffset: { width: 10, height: 10 },
+    borderColor: 'black',
+    borderWidth: 1,
   },
   sectionTitle: {
     fontSize: 18,
@@ -172,7 +174,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(255, 165, 0)',
     paddingVertical: 5,
     paddingHorizontal: 10,
-    borderRadius: 10,
+    borderRadius: 6,
     marginLeft: 10,
   },
   actionText: {

@@ -4,12 +4,12 @@ import IconWithGradient from '../../components/IconWithGradient';
 import { Device } from '../../stores/deviceStore';
 import EffectShadow from './EffectShadow';
 
-interface DeviceCardProps {
+interface HomeDeviceCardProps {
   device: Device & { ip: string };
   onPress: () => void;
 }
 
-const DeviceCard: React.FC<DeviceCardProps> = ({ device, onPress }) => {
+const HomeDeviceCard: React.FC<HomeDeviceCardProps> = ({ device, onPress }) => {
   const getDeviceShadow = (device: Device) => {
     const effectName = device.effectName || 'Unknown';
     if (effectName === 'Solid Color' && device.selectedColor) {
@@ -18,6 +18,15 @@ const DeviceCard: React.FC<DeviceCardProps> = ({ device, onPress }) => {
         shadowOpacity: 1,
         shadowRadius: 14,
         shadowOffset: { width: 0, height: 0 },
+        elevation: 5,
+      };
+    }
+    if (effectName === 'LEDs Off' || effectName === 'Unknown') {
+      return {
+        shadowColor: 'black',
+        shadowOpacity: 1,
+        shadowRadius: 10,
+        shadowOffset: { width: 10, height: 10 },
         elevation: 5,
       };
     }
@@ -72,9 +81,10 @@ const styles = StyleSheet.create({
     height: 150,
     alignItems: 'center',
     padding: 10,
-    backgroundColor: 'rgba(10, 15, 20, 1)',
+    backgroundColor: 'rgb(10, 15, 20)',
     borderRadius: 20,
     justifyContent: 'center',
+    borderWidth: 0.5,
     zIndex: 1,
   },
   deviceTitle: {
@@ -82,14 +92,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
-    maxWidth: 130, // Slightly less than container width
+    maxWidth: 130,
   },
   sectionText: {
     fontSize: 14,
     color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
   },
-  shadowSquare: { // Included for reference, not used directly here
+  shadowSquare: {
     width: 100,
     height: 100,
     position: 'absolute',
@@ -98,26 +108,6 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderRadius: 10,
   },
-  topLeft: {
-    top: 15,
-    left: 15,
-    shadowOffset: { width: -15, height: -15 },
-  },
-  topRight: {
-    top: 15,
-    right: 15,
-    shadowOffset: { width: 15, height: -15 },
-  },
-  bottomLeft: {
-    bottom: 15,
-    left: 15,
-    shadowOffset: { width: -15, height: 15 },
-  },
-  bottomRight: {
-    bottom: 15,
-    right: 15,
-    shadowOffset: { width: 15, height: 15 },
-  },
 });
 
-export default DeviceCard;
+export default HomeDeviceCard;

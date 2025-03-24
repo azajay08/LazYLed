@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
+// implement different strips of LED lights
+
 interface LedStripProps {
   selectedColor: string;
 }

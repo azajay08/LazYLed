@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
   pressableSquare: {
     shadowColor: 'black',
     shadowOpacity: 0.8,
-    shadowRadius: 10,
-    shadowOffset: { width: 5, height: 5 },
+    shadowRadius: 1,
+    shadowOffset: { width: 0, height: 0 },
     width: 50,
     height: 50,
     justifyContent: 'center' as const,
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
   off: {
     backgroundColor: 'rgba(10, 15, 20, 1)',
     borderColor: 'black',
+    borderWidth: 3,
   },
   on: {
     borderColor: 'cyan',

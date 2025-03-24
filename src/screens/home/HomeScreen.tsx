@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import useDeviceStore from '../../stores/deviceStore';
 import { useNavigation } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import DeviceCard from './DeviceCard';
+import HomeDeviceCard from './HomeDeviceCard';
 
 type RootTabParamList = {
   Home: undefined;
@@ -37,7 +37,7 @@ const HomeScreen: React.FC = () => {
           ) : (
             <View style={styles.sectionContentContainer}>
               {Object.entries(devices).map(([deviceIP, device]) => (
-                <DeviceCard
+                <HomeDeviceCard
                   key={deviceIP}
                   device={{ ip: deviceIP, ...device }}
                   onPress={handleDevicePress}
@@ -70,12 +70,14 @@ const styles = StyleSheet.create({
   sectionContainer: {
     marginBottom: 20,
     padding: 15,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    backgroundColor: 'rgb(22, 24, 29)',
     borderRadius: 20,
     shadowColor: 'black',
     shadowOpacity: 0.8,
     shadowRadius: 10,
     shadowOffset: { width: 10, height: 10 },
+    borderColor: 'black',
+    borderWidth: 1,
   },
   sectionTitle: {
     fontSize: 18,

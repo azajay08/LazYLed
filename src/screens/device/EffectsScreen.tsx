@@ -13,7 +13,6 @@ import useDeviceStore, { Effect, HsvColor } from '../../stores/deviceStore';
 import { hexToHsv } from '../../utils/hexToHsv';
 import ColorPicker from 'react-native-wheel-color-picker';
 import Slider from '@react-native-community/slider';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type EffectsNavigationProp = StackNavigationProp<DeviceStackParamList, 'EffectsPage'>;
 type EffectsRouteProp = RouteProp<DeviceStackParamList, 'EffectsPage'>;
@@ -29,9 +28,7 @@ const EffectsScreen: React.FC<EffectsScreenProps> = ({ navigation, route }) => {
   const device = devices[deviceIp] || {};
   const effectsList = (device.effectsList || []).filter((effect) => effect.functionNumber !== 0);
 
-  const [selectedEffect, setSelectedEffect] = useState<Effect>(
-    initialEffect || effectsList[0]
-  );
+  const selectedEffect = initialEffect || effectsList[0]; // No useState
   const [speed, setSpeed] = useState<number>(20);
   const [colors, setColors] = useState<string[]>(['']);
   const [selectedColorIndex, setSelectedColorIndex] = useState<number>(0);
@@ -105,11 +102,6 @@ const EffectsScreen: React.FC<EffectsScreenProps> = ({ navigation, route }) => {
             <Text style={styles.buttonText}>Other Effects</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.uniformButton, { backgroundColor: 'cyan', borderColor: 'black' }]} onPress={activateEffect}>
-            {/* <MaterialCommunityIcons
-                      name={'animation-play'}
-                      size={30}
-                      color="black"
-                    /> */}
             <Text style={[styles.buttonText, {color: 'black'}]}>Run Effect</Text>
           </TouchableOpacity>
         </View>
@@ -166,6 +158,7 @@ const EffectsScreen: React.FC<EffectsScreenProps> = ({ navigation, route }) => {
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -173,10 +166,16 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   topContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+    backgroundColor: 'rgb(22, 24, 29)',
     borderRadius: 15,
     padding: 10,
     marginBottom: 10,
+    shadowColor: 'black',
+    shadowOffset: { width: 10, height: 10 },
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    borderWidth: 1,
+    borderColor: 'black',
   },
   topRow: {
     flexDirection: 'row',
@@ -190,7 +189,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     backgroundColor: 'rgba(10, 15, 20, 1)',
     borderRadius: 10,
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: 'cyan',
     shadowColor: 'black',
     shadowOffset: { width: 10, height: 10 },
@@ -203,8 +202,14 @@ const styles = StyleSheet.create({
     color: 'cyan',
   },
   controls: {
-    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+    backgroundColor: 'rgb(22, 24, 29)',
     borderRadius: 15,
+    shadowColor: 'black',
+    shadowOffset: { width: 10, height: 10 },
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    borderWidth: 1,
+    borderColor: 'black',
   },
   controlsContent: {
     padding: 15,

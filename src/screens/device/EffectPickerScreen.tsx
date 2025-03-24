@@ -4,7 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { DeviceStackParamList } from './DeviceStackScreen';
 import useDeviceStore, { Effect } from '../../stores/deviceStore';
-import LinearGradient from 'react-native-linear-gradient';
+import EffectGradientShadow from '../../components/EffectShadowGradient';
 
 type EffectPickerNavigationProp = StackNavigationProp<DeviceStackParamList, 'EffectPickerScreen'>;
 type EffectPickerRouteProp = RouteProp<DeviceStackParamList, 'EffectPickerScreen'>;
@@ -28,22 +28,20 @@ const EffectPickerScreen: React.FC<Props> = ({ navigation, route }) => {
       : ['#00FFFF', '#FF00FF']; // Default cyan-to-magenta
 
     return (
-      <TouchableOpacity
-        style={styles.effectCard}
-        onPress={() => {
-          navigation.replace('EffectsPage', { deviceIp, selectedEffect: item });
-        }}
-      >
-        <Text style={styles.effectName} numberOfLines={2} ellipsizeMode="tail">
-          {item.name}
-        </Text>
-        <LinearGradient
-          colors={gradientColors}
-          style={styles.gradientPreview}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-        />
-      </TouchableOpacity>
+      <View style={styles.cardWrapper}>
+        <EffectGradientShadow colors={gradientColors} shadowRadius={8} />
+        <TouchableOpacity
+          style={styles.effectCard}
+          onPress={() => {
+            navigation.replace('EffectsPage', { deviceIp, selectedEffect: item });
+          }}
+          activeOpacity={1}
+        >
+          <Text style={styles.effectName} numberOfLines={2} ellipsizeMode="tail">
+            {item.name}
+          </Text>
+        </TouchableOpacity>
+      </View>
     );
   };
 
@@ -61,10 +59,15 @@ const EffectPickerScreen: React.FC<Props> = ({ navigation, route }) => {
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'rgb(10,15,20)',
+  },
+  cardWrapper: {
+    marginBottom: 30,
+    position: 'relative' as const,
   },
   title: {
     fontSize: 20,
@@ -76,15 +79,15 @@ const styles = StyleSheet.create({
     textAlign:'center',
   },
   effectsList: {
-    paddingHorizontal: 10,
+    padding: 30,
+    paddingTop: 30,
   },
   effectCard: {
-    padding: 15,
-    marginHorizontal: 20,
-    marginVertical: 10,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    padding: 10,
+    backgroundColor: 'rgb(22, 24, 29)',
     borderRadius: 15,
     alignItems: 'center',
+    borderWidth: 1,
   },
   effectName: {
     fontSize: 18,
