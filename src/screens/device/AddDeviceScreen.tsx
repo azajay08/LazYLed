@@ -54,7 +54,7 @@ const AddDeviceScreen: React.FC = () => {
       );
       setDevices(availableDevices);
       setIsScanning(false);
-    }, 2000);
+    }, 200);
     return () => clearTimeout(timer);
   }, [storeDevices]);
 
@@ -75,8 +75,8 @@ const AddDeviceScreen: React.FC = () => {
         setIsSuccess(true);
         setTimeout(() => {
           setIsSuccess(false);
-        }, 1000);
-      }, 1000);
+        }, 100);
+      }, 100);
     }
   };
 

@@ -10,11 +10,17 @@ interface BrightnessSliderProps {
 }
 
 const BrightnessSlider: React.FC<BrightnessSliderProps> = ({ deviceIp }) => {
+  const { toggleOnOff } = useDeviceStore();
   const device = useDeviceStore((state) => state.devices[deviceIp]);
   const brightness = useDeviceStore((state) => state.devices[deviceIp]?.brightness);
   const { setBrightness } = useDeviceStore();
 
   const displayBrightness = device?.effectName === 'LEDs Off' ? 0 : brightness;
+  const isOff =
+    device?.effectName === 'LEDs Off'
+    || device?.effectName === "Unknown"
+    || device?.effectName === "Unavailable"
+    || brightness === 0;
 
   const debouncedSetBrightness = useCallback(
     debounce((value: number) => {
@@ -23,7 +29,18 @@ const BrightnessSlider: React.FC<BrightnessSliderProps> = ({ deviceIp }) => {
     [setBrightness, deviceIp]
   );
 
+  const handleOnOff = (value: number) => {
+    if (value === 0 && !isOff) {
+      toggleOnOff(deviceIp);
+    }
+    if (value !== 0 && isOff) {
+      toggleOnOff(deviceIp);
+      // isOff = false;
+    }
+  }
+
   const handleSliderChange = (value: number) => {
+    handleOnOff(value);
     debouncedSetBrightness(value);
   };
 
@@ -35,7 +52,7 @@ const BrightnessSlider: React.FC<BrightnessSliderProps> = ({ deviceIp }) => {
 
   return (
     <View style={styles.container}>
-      <MaterialCommunityIcons name="lightbulb-on-outline" size={20} color={'cyan'} style={{ padding: 5 }} />
+      {/* <MaterialCommunityIcons name="lightbulb-on-outline" size={20} color={'cyan'} style={{ padding: 5 }} /> */}
       <Slider
         style={styles.slider}
         value={displayBrightness ?? 0} // Default to 0 if undefined
@@ -48,7 +65,12 @@ const BrightnessSlider: React.FC<BrightnessSliderProps> = ({ deviceIp }) => {
         maximumTrackTintColor="rgb(10,15,20)"
         thumbTintColor={'cyan'}
       />
-      <MaterialCommunityIcons name="lightbulb-on" size={30} color={'cyan'} style={styles.onBulb} />
+      {isOff ?
+        <MaterialCommunityIcons name="lightbulb-off" size={23} color={'cyan'} style={styles.offBulb} /> :
+      
+        <MaterialCommunityIcons name="lightbulb-on" size={25} color={'cyan'} style={styles.onBulb} />
+      
+      }
     </View>
   );
 };
@@ -58,10 +80,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row' as const,
     justifyContent: 'center' as const,
     alignItems: 'center' as const,
-    padding: 20,
+    paddingHorizontal: 2,
   },
   slider: {
-    width: 250,
+    width: "90%",
     height: 30,
     shadowColor: 'cyan',
     shadowOpacity: 0.8,
@@ -74,6 +96,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 6,
     shadowOffset: { width: 0, height: 0 },
+  },
+  offBulb: {
+    padding: 5,
   },
 });
 

@@ -10,7 +10,8 @@ interface OnOffButtonProps {
 
 const OnOffButton: React.FC<OnOffButtonProps> = ({ isOnOff, deviceIp }) => {
   const { toggleOnOff } = useDeviceStore();
-  const isOff = isOnOff === 'LEDs Off' || isOnOff === 'Unavailable';
+  const brightness = useDeviceStore((state) => state.devices[deviceIp]?.brightness);
+  const isOff = isOnOff === 'LEDs Off' || isOnOff === 'Unavailable' || brightness === 0;
 
   const handlePress = () => {
     toggleOnOff(deviceIp);

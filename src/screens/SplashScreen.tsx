@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
+import { View, StyleSheet } from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -11,31 +10,54 @@ import Animated, {
 } from "react-native-reanimated";
 import { fontFamilies } from "../constants/fonts";
 
-const { width, height } = Dimensions.get("window");
+const neonPalette = {
+  cyan: "#34e5eb",
+  pink: "#eb34c0",
+  orange: "#eb8334",
+};
 
-const SplashScreen = ({ onFinish }: { onFinish: () => void }) => {
+const ANIMATION_DURATIONS = {
+  scale: 1200,
+  opacityDelay: 3000,
+  fadeOut: 8000,
+};
+
+const SplashScreen = ({ onFinish = () => {} }: { onFinish?: () => void }) => {
   // Animation values
   const scale = useSharedValue(10);
   const opacity = useSharedValue(0);
   const mirrorScaleX = useSharedValue(1);
+  const lPos = useSharedValue(0);
+  const letterOpacity = useSharedValue(0);
+  const lOpacity = useSharedValue(0);
+  const fadeOut = useSharedValue(1);
 
   useEffect(() => {
-    scale.value = withTiming(1, { duration: 1200 });
+    scale.value = withSequence(
+      withTiming(1, { duration: ANIMATION_DURATIONS.scale })
+    );
     opacity.value = withDelay(
-      2000,
+      ANIMATION_DURATIONS.opacityDelay,
       withRepeat(
         withSequence(
-          withTiming(1, { duration: 1200 }), // Glow bright
-          withTiming(0.1, { duration: 800 }), // Dim
+          withTiming(1, { duration: 1800 }), // Glow bright
+          withDelay(100, withTiming(0, { duration: 800 })), // Dim
           withTiming(1, { duration: 1200 }) // Glow back
         ),
-        1,
+        1
       )
     );
     mirrorScaleX.value = withTiming(-1, { duration: 0 });
-    setTimeout(() => {
+    lPos.value = withDelay(2800, withTiming(-70, { duration: 2000 }));
+    letterOpacity.value = withDelay(3200, withTiming(1, { duration: 2800 }));
+    lOpacity.value = withDelay(2000, withTiming(1, { duration: 1800 }));
+    fadeOut.value = withDelay(ANIMATION_DURATIONS.fadeOut, withTiming(0, { duration: 2000 }));
+
+    const timeout = setTimeout(() => {
       onFinish();
-    }, 8000);
+    }, 9000);
+
+    return () => clearTimeout(timeout);
   }, []);
 
   // Animated styles
@@ -47,104 +69,51 @@ const SplashScreen = ({ onFinish }: { onFinish: () => void }) => {
     opacity: opacity.value,
   }));
 
-  const animatedLEDStyle = useAnimatedStyle(() => ({
-    transform: [{ scaleX: mirrorScaleX.value }],
+  const animatedLStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: lPos.value }],
   }));
 
+  const animatedReverseLStyle = useAnimatedStyle(() => ({
+    transform: [{ scaleX: mirrorScaleX.value }, { translateX: lPos.value }],
+  }));
+
+  const animatedEDStyle = useAnimatedStyle(() => ({
+    transform: [{ scaleX: mirrorScaleX.value }],
+    opacity: letterOpacity.value,
+  }));
+
+  const animatedAZStyle = useAnimatedStyle(() => ({
+    opacity: letterOpacity.value,
+  }));
+
+  const animatedTextStyle = useAnimatedStyle(() => ({
+    opacity: lOpacity.value,
+  }));
+
+  const animatedGlowStyle = useAnimatedStyle(() => ({
+    shadowOpacity: opacity.value,
+  }));
+
+  const renderText = (text: string, style: any, count: number) => {
+    return Array.from({ length: count }).map((_, index) => (
+      <Animated.Text key={index} style={style}>
+        {text}
+      </Animated.Text>
+    ));
+  };
+
   return (
-    <View style={styles.container}>
-      {/* Light Beams */}
-      <Animated.View style={[styles.lightBeam, styles.leftBeam, animatedLightStyle]}>
-        <LinearGradient
-          colors={["#ff008c", "#b700ff", "#00fffb"]}
-          start={{ x: 0, y: 0.3 }}
-          end={{ x: 0, y: 0.75 }}
-          style={styles.gradient}
-        />
-      </Animated.View>
-      <Animated.View style={[styles.lightBeam, styles.rightBeam, animatedLightStyle]}>
-        <LinearGradient
-          colors={["#ff004c", "#ff0000", "#ff6f00", "#00fffb"]}
-          start={{ x: 0, y: 0.3 }}
-          end={{ x: 0, y: 0.75 }}
-          style={styles.gradient}
-        />
-      </Animated.View>
-
-      {/* Masks */}
-      <View style={styles.bottomTriangle} />
-      <View style={styles.topTriangle} />
-      <Animated.View style={[styles.vMask, animatedYStyle]} />
-
-      {/* Block Gradients */}
-      <View style={styles.topRightBlockGradient}>
-        <LinearGradient
-          colors={["rgb(10,15,20)", "transparent"]}
-          start={{ x: 1, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.gradient}
-        />
-      </View>
-      <View style={styles.topLeftBlockGradient}>
-        <LinearGradient
-          colors={["rgb(10,15,20)", "transparent"]}
-          start={{ x: 1, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.gradient}
-        />
-      </View>
-      <View style={styles.bottomRightBlockGradient}>
-        <LinearGradient
-          colors={["transparent", "rgb(10,15,20)"]}
-          start={{ x: 1, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.gradient}
-        />
-      </View>
-      <View style={styles.bottomLeftBlockGradient}>
-        <LinearGradient
-          colors={["transparent", "rgb(10,15,20)"]}
-          start={{ x: 1, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.gradient}
-        />
-      </View>
-      <View style={styles.leftBlockGradient}>
-        <LinearGradient
-          colors={["rgb(10,15,20)", "transparent"]}
-          start={{ x: 0.3, y: 1 }}
-          end={{ x: 1, y: 0.98 }}
-          style={styles.gradient}
-        />
-      </View>
-      <View style={styles.rightBlockGradient}>
-        <LinearGradient
-          colors={["rgb(10,15,20)", "transparent"]}
-          start={{ x: 0.9, y: 1 }}
-          end={{ x: 0, y: 0.98 }}
-          style={styles.gradient}
-        />
-      </View>
-
+    <View style={styles.container} accessible accessibilityLabel="Splash Screen">
       {/* Text Elements */}
-      <Animated.Text style={[styles.letterY, styles.yGlowBase, animatedYStyle]}>
-        Y
-      </Animated.Text>
-      <Animated.Text style={[styles.letterY, styles.yGlowMid, animatedYStyle, animatedLightStyle]}>
-        Y
-      </Animated.Text>
-      <Animated.Text style={[styles.letterY, styles.yGlowOuter, animatedYStyle, animatedLightStyle]}>
-        Y
-      </Animated.Text>
+      {renderText("Y", [styles.letterY, styles.yGlowBase, animatedYStyle], 1)}
+      {renderText("Y", [styles.letterY, styles.yGlowMid, animatedYStyle, animatedLightStyle], 1)}
+      {renderText("Y", [styles.letterY, styles.yGlowOuter, animatedYStyle, animatedLightStyle], 1)}
+
       <View style={styles.textContainer}>
-        <Animated.Text style={[styles.letterL, animatedLightStyle]}>L</Animated.Text>
-        <Animated.Text style={[styles.az, animatedLightStyle]}>AZ</Animated.Text>
-        <Animated.Text style={[styles.reverseL, animatedLEDStyle, animatedLightStyle]}>
-          L
-        </Animated.Text>
-        <Animated.Text style={[styles.ed, animatedLEDStyle, animatedLightStyle]}>
-          ED
-        </Animated.Text>
+        {renderText("L", [styles.letterL, animatedTextStyle, animatedLStyle, animatedGlowStyle], 3)}
+        {renderText("AZ", [styles.az, animatedAZStyle, animatedGlowStyle], 3)}
+        {renderText("L", [styles.reverseL, animatedTextStyle, animatedReverseLStyle, animatedGlowStyle], 3)}
+        {renderText("ED", [styles.ed, animatedEDStyle, animatedGlowStyle], 3)}
       </View>
     </View>
   );
@@ -158,112 +127,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  gradient: {
-    flex: 1,
-  },
-
-  // Light Beams
-  lightBeam: {
-    position: "absolute",
-    width: width * 1.3,
-    height: height * 0.5,
-    top: height * 0.25,
-
-  },
-  leftBeam: {
-    left: -width * 0.83,
-  },
-  rightBeam: {
-    right: -width * 0.83,
-  },
-
-  // Masks
-  vMask: {
-    position: "absolute",
-    width: 0,
-    height: 0,
-    borderLeftWidth: 65,
-    borderRightWidth: 65,
-    borderTopWidth: 120,
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    borderTopColor: "rgb(10,15,20)",
-    top: height * 0.418,
-    transform: [{ rotate: "180deg" }],
-  },
-  bottomTriangle: {
-    position: "absolute",
-    width: 0,
-    height: 0,
-    borderLeftWidth: 280,
-    borderRightWidth: 280,
-    borderTopWidth: 180,
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    borderTopColor: "rgb(10,15,20)",
-    top: height * 0.59,
-    transform: [{ rotate: "180deg" }],
-  },
-  topTriangle: {
-    position: "absolute",
-    width: 0,
-    height: 0,
-    borderLeftWidth: 400,
-    borderRightWidth: 400,
-    borderTopWidth: 180,
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    borderTopColor: "rgb(10,15,20)",
-    top: height * 0.245,
-  },
-
-  // Block Gradients
-  leftBlockGradient: {
-    position: "absolute",
-    width: width * 0.6,
-    height: height,
-    top: 0,
-    left: width * -0.1,
-  },
-  rightBlockGradient: {
-    position: "absolute",
-    width: width * 0.6,
-    height: height,
-    top: 0,
-    right: width * -0.1,
-  },
-  bottomLeftBlockGradient: {
-    position: "absolute",
-    width: width * 0.75,
-    height: height * 0.05,
-    top: height * 0.634,
-    left: width * -0.2,
-    transform: [{ rotate: "-32deg" }],
-  },
-  bottomRightBlockGradient: {
-    position: "absolute",
-    width: width * 0.75,
-    height: height * 0.05,
-    top: height * 0.634,
-    right: width * -0.2,
-    transform: [{ rotate: "32deg" }],
-  },
-  topLeftBlockGradient: {
-    position: "absolute",
-    width: width * 0.75,
-    height: height * 0.05,
-    top: height * 0.388,
-    left: width * -0.2,
-    transform: [{ rotate: "23deg" }],
-  },
-  topRightBlockGradient: {
-    position: "absolute",
-    width: width * 0.75,
-    height: height * 0.05,
-    top: height * 0.388,
-    right: width * -0.2,
-    transform: [{ rotate: "-23deg" }],
-  },
 
   // Text Styles
   textContainer: {
@@ -273,24 +136,24 @@ const styles = StyleSheet.create({
     fontFamily: fontFamilies.TRAINONE.normal,
     fontSize: 200,
     color: "#fff",
-    fontWeight: "bold",
+    // fontWeight: "bold",
     position: "absolute",
     zIndex: 1,
   },
   yGlowBase: {
-    shadowColor: "white",
+    shadowColor: neonPalette.cyan,
     shadowOpacity: 1,
     shadowRadius: 20,
     shadowOffset: { width: 0, height: 0 },
   },
   yGlowMid: {
-    shadowColor: "white",
+    shadowColor: neonPalette.cyan,
     shadowOpacity: 0.9,
     shadowRadius: 25,
     shadowOffset: { width: 1, height: 1 },
   },
   yGlowOuter: {
-    shadowColor: "#ff004c",
+    shadowColor: neonPalette.cyan,
     shadowOpacity: 0.8,
     shadowRadius: 30,
     shadowOffset: { width: 2, height: 2 },
@@ -298,50 +161,50 @@ const styles = StyleSheet.create({
   letterL: {
     fontSize: 100,
     fontFamily: fontFamilies.ORBITRON.normal,
-    color: "rgb(10,15,20)",
+    color: "white",
     position: "absolute",
     top: -35,
-    right: 100,
-    shadowColor: "rgb(10,15,20)",
-    shadowOpacity: 0.9,
+    right: 30,
+    shadowColor: neonPalette.pink,
+    shadowOpacity: 1,
     shadowRadius: 10,
-    shadowOffset: { width: -5, height: 5 },
+    shadowOffset: { width: 0, height: 0 },
   },
   reverseL: {
     fontSize: 100,
     fontFamily: fontFamilies.ORBITRON.normal,
-    color: "rgb(10,15,20)",
+    color: "white",
     position: "absolute",
     top: -35,
-    left: 100,
-    shadowColor: "rgb(10,15,20)",
-    shadowOpacity: 0.9,
+    left: 30,
+    shadowColor: neonPalette.orange,
+    shadowOpacity: 1,
     shadowRadius: 10,
-    shadowOffset: { width: -5, height: 5 },
+    shadowOffset: { width: 0, height: 0 },
   },
   az: {
     fontSize: 40,
-    fontFamily: fontFamilies.ORBITRON.normal,
-    color: "rgb(10,15,20)",
+    fontFamily: fontFamilies.ORBITRON.bold,
+    color: "white",
     position: "absolute",
     top: 25,
     right: 30,
-    shadowColor: "rgb(10,15,20)",
-    shadowOpacity: 0.9,
+    shadowColor: neonPalette.pink,
+    shadowOpacity: 1,
     shadowRadius: 10,
-    shadowOffset: { width: -5, height: 5 },
+    shadowOffset: { width: 0, height: 0 },
   },
   ed: {
     fontSize: 40,
-    fontFamily: fontFamilies.ORBITRON.normal,
-    color: "rgb(10,15,20)",
+    fontFamily: fontFamilies.ORBITRON.bold,
+    color: "white",
     position: "absolute",
     top: 25,
     left: 30,
-    shadowColor: "rgb(10,15,20)",
-    shadowOpacity: 0.9,
+    shadowColor: neonPalette.orange,
+    shadowOpacity: 1,
     shadowRadius: 10,
-    shadowOffset: { width: -5, height: 5 },
+    shadowOffset: { width: 0, height: 0 },
   },
 });
 

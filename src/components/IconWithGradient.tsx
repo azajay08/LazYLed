@@ -34,7 +34,7 @@ const IconWithGradient: React.FC<IconWithGradientProps> = ({ iconName, size, sel
         colors={solidColorGradient}
         start={{ x: 0.1, y: 0.25 }}
         end={{ x: 0.03, y: 0.5 }}
-        style={styles.gradient}
+        style={[{width: size}, {height: size}]}
       />
     </MaskedView>
     );
@@ -54,7 +54,7 @@ const IconWithGradient: React.FC<IconWithGradientProps> = ({ iconName, size, sel
         colors={gradientColors}
         start={{ x: 0.12, y: 0.15 }}
         end={{ x: 0, y: 0.8 }}
-        style={styles.gradient}
+        style={[{width: size}, {height: size}]}
       />
     </MaskedView>
   );
@@ -62,18 +62,14 @@ const IconWithGradient: React.FC<IconWithGradientProps> = ({ iconName, size, sel
 
 const styles = StyleSheet.create({
   iconContainer: {
-    width: 70,
-    height: 70,
+    // width: 70,
+    // height: 70,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: 'white',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.4,
     shadowRadius: 5,
-  },
-  gradient: {
-    width: 70,
-    height: 70,
   },
 });
 

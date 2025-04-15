@@ -13,6 +13,9 @@ interface CustomEffectPayload {
   functionNumber: number;
   speed?: number;
   colors?: HsvColor[];
+  moving?: boolean,
+  reverse?: boolean,
+  blend?: boolean,
 }
 
 interface LastState {
@@ -30,6 +33,9 @@ export interface Effect {
   colorParams: number;
   description?: string;
   sampleGradient?: string[];
+  blend?: boolean,
+  reverse?: boolean,
+  moving?: boolean,
 }
 
 export interface Device {
@@ -44,6 +50,7 @@ export interface Device {
   effectCount: number;
   effectsList: Effect[];
   lastState?: LastState;
+  favoriteColors: string[];
 }
 
 interface DeviceState {
@@ -57,11 +64,22 @@ interface DeviceState {
   setEffect: (deviceIP: string, functionNumber: number) => Promise<void>;
   setColor: (deviceIP: string, color: { h: number; s: number; v: number }) => Promise<void>;
   setBrightness: (deviceIP: string, brightness: number) => Promise<void>;
-  setCustomEffect: (deviceIP: string, functionNumber: number, speed?: number, colors?: HsvColor[]) => Promise<void>;
+  setCustomEffect: (
+    deviceIP: string,
+    functionNumber: number,
+    speed?: number,
+    colors?: HsvColor[],
+    moving?: boolean,
+    reverse?: boolean,
+    blend?: boolean
+  ) => Promise<void>;
   cycleEffect: (deviceIP: string) => Promise<void>;
   toggleOnOff: (deviceIP: string) => Promise<void>;
   setDeviceName: (deviceIP: string, name: string) => void;
   removeDevice: (deviceIP: string) => void;
+  addFavoriteColor: (deviceIP: string, color: string) => void;
+  removeFavoriteColor: (deviceIP: string, index: number) => void; // New
+  replaceFavoriteColor: (deviceIP: string, index: number, color: string) => void; // New
 }
 
 const useDeviceStore = create<DeviceState>((set, get) => ({
@@ -85,6 +103,7 @@ const useDeviceStore = create<DeviceState>((set, get) => ({
           effectCount: 0,
           roomName: "Unknown",
           effectsList: [],
+          favoriteColors: ["#FFFFFF"],
         },
       },
     }));
@@ -196,8 +215,9 @@ const useDeviceStore = create<DeviceState>((set, get) => ({
   },
 
   setEffect: async (deviceIP: string, functionNumber: number) => {
-    const { syncMode, devices, fetchDeviceStatus } = get();
+    const { syncMode, devices, setBrightness, fetchDeviceStatus } = get();
     const deviceIPs = syncMode ? Object.keys(devices) : [deviceIP];
+    if (devices[deviceIP].brightness === 0) setBrightness(deviceIP, 100);
 
     try {
       const payload = { functionNumber };
@@ -229,8 +249,9 @@ const useDeviceStore = create<DeviceState>((set, get) => ({
   },
 
   setColor: async (deviceIP: string, color: { h: number; s: number; v: number }) => {
-    const { syncMode, devices, fetchDeviceStatus } = get();
+    const { syncMode, devices, setBrightness, fetchDeviceStatus } = get();
     const deviceIPs = syncMode ? Object.keys(devices) : [deviceIP];
+    if (devices[deviceIP].brightness === 0) setBrightness(deviceIP, 100);
 
     try {
       const payload = { h: color.h, s: color.s, v: color.v };
@@ -281,8 +302,9 @@ const useDeviceStore = create<DeviceState>((set, get) => ({
   },
 
   cycleEffect: async (deviceIP: string) => {
-    const { syncMode, devices, fetchDeviceStatus } = get();
+    const { syncMode, devices, setBrightness, fetchDeviceStatus } = get();
     const deviceIPs = syncMode ? Object.keys(devices) : [deviceIP];
+    if (devices[deviceIP].brightness === 0) setBrightness(deviceIP, 100);
 
     try {
       const requests = deviceIPs.map(ip =>
@@ -295,90 +317,98 @@ const useDeviceStore = create<DeviceState>((set, get) => ({
     }
   },
 
-toggleOnOff: async (deviceIP: string) => {
-  const { syncMode, devices, setColor, setEffect, setCustomEffect, fetchDeviceStatus } = get();
-  const deviceIPs = syncMode ? Object.keys(devices) : [deviceIP];
-  const device = devices[deviceIP];
-  const isOff = device.effectName === "LEDs Off";
+  toggleOnOff: async (deviceIP: string) => {
+    const { syncMode, devices, setColor, setEffect, setCustomEffect, setBrightness, fetchDeviceStatus } = get();
+    const deviceIPs = syncMode ? Object.keys(devices) : [deviceIP];
+    const device = devices[deviceIP];
+    const isOff = device.effectName === "LEDs Off";
 
-  console.log(`Status ${device.selectedColor}`);
-  console.log(`Status ${device.effectName}`);
-  console.log(`Status ${device.effectNumber}`);
-  console.log(`Status ${device.brightness}`);
+    console.log(`Status ${device.selectedColor}`);
+    console.log(`Status ${device.effectName}`);
+    console.log(`Status ${device.effectNumber}`);
+    console.log(`Status ${device.brightness}`);
 
-  if (!isOff) {
-    const lastState: LastState = {
-      selectedColor: device.selectedColor,
-      effectNumber: device.effectNumber,
-      effectName: device.effectName,
-      brightness: device.brightness,
-      customEffect: device.effectName !== "Solid Color" && device.lastState?.customEffect
-        ? device.lastState.customEffect
-        : undefined,
-    };
-    set((state) => ({
-      devices: {
-        ...state.devices,
-        [deviceIP]: {
-          ...state.devices[deviceIP],
-          lastState,
+    if (!isOff) {
+      const lastState: LastState = {
+        selectedColor: device.selectedColor,
+        effectNumber: device.effectNumber,
+        effectName: device.effectName,
+        brightness: device.brightness,
+        customEffect: device.effectName !== "Solid Color" && device.lastState?.customEffect
+          ? device.lastState.customEffect
+          : undefined,
+      };
+      set((state) => ({
+        devices: {
+          ...state.devices,
+          [deviceIP]: {
+            ...state.devices[deviceIP],
+            lastState,
+          },
         },
-      },
-    }));
-    try {
-      const requests = deviceIPs.map(ip =>
-        axios.post(`http://${ip}/onOff`, {}, { timeout: 2000 })
-      );
-      await Promise.all(requests);
-      await Promise.all(deviceIPs.map(ip => fetchDeviceStatus(ip)));
-    } catch (error) {
-      console.error(`Error turning on/off ${deviceIP}:`, error);
-      return;
-    }
-  }
-
-
-  else {
-    const lastState = device.lastState;
-    if (lastState) {
+      }));
       try {
-        if (lastState.customEffect) {
-          await setCustomEffect(
-            deviceIP,
-            lastState.customEffect.functionNumber,
-            lastState.customEffect.speed,
-            lastState.customEffect.colors
-          );
-        } else if (lastState.effectName === "Solid Color" && lastState.selectedColor) {
-          const hsv = hexToHsv(lastState.selectedColor);
-          await setColor(deviceIP, hsv);
-        } else if (lastState.effectNumber !== undefined && lastState.effectName !== "Solid Color" && lastState.effectName !== "LEDs Off") {
-          await setEffect(deviceIP, lastState.effectNumber as number);
-          await fetchDeviceStatus(deviceIP);
-        } else {
-          await setColor(deviceIP, hexToHsv("#FFFFFF"));
-        }
+        const requests = deviceIPs.map(ip =>
+          axios.post(`http://${ip}/onOff`, {}, { timeout: 2000 })
+        );
+        await Promise.all(requests);
+        await Promise.all(deviceIPs.map(ip => fetchDeviceStatus(ip)));
       } catch (error) {
-        console.error(`Error restoring state for ${deviceIP}:`, error);
+        console.error(`Error turning on/off ${deviceIP}:`, error);
+        return;
       }
-    } else {
-      await setColor(deviceIP, hexToHsv("#FFFFFF"));
     }
-  }
-},
+
+
+    else {
+      const lastState = device.lastState;
+      if (device.brightness === 0) setBrightness(deviceIP, 100);
+      if (lastState) {
+        try {
+          if (lastState.customEffect) {
+            await setCustomEffect(
+              deviceIP,
+              lastState.customEffect.functionNumber,
+              lastState.customEffect.speed,
+              lastState.customEffect.colors
+            );
+          } else if (lastState.effectName === "Solid Color" && lastState.selectedColor) {
+            const hsv = hexToHsv(lastState.selectedColor);
+            await setColor(deviceIP, hsv);
+          } else if (lastState.effectNumber !== undefined && lastState.effectName !== "Solid Color" && lastState.effectName !== "LEDs Off") {
+            await setEffect(deviceIP, lastState.effectNumber as number);
+            await fetchDeviceStatus(deviceIP);
+          } else {
+            await setColor(deviceIP, hexToHsv("#FFFFFF"));
+          }
+        } catch (error) {
+          console.error(`Error restoring state for ${deviceIP}:`, error);
+        }
+      } else {
+        await setColor(deviceIP, hexToHsv("#FFFFFF"));
+      }
+    }
+  },
 
   setCustomEffect: async (
     deviceIP: string,
     functionNumber: number,
     speed?: number,
-    colors?: HsvColor[]
+    colors?: HsvColor[],
+    moving?: boolean,
+    reverse?: boolean,
+    blend?: boolean,
   ) => {
-    const { syncMode, devices, fetchDeviceStatus } = get();
+    const { syncMode, devices, setBrightness, fetchDeviceStatus } = get();
     const deviceIPs = syncMode ? Object.keys(devices) : [deviceIP];
+    if (devices[deviceIP].brightness === 0) setBrightness(deviceIP, 100);
     try {
       const payload: CustomEffectPayload = { functionNumber };
       if (speed !== undefined) payload.speed = speed;
       if (colors) payload.colors = colors;
+      if (moving) payload.moving = moving;
+      if (reverse) payload.reverse = reverse;
+      console.log(payload);
       const requests = deviceIPs.map(ip =>
         axios.post(`http://${ip}/setCustomEffect`, payload, { timeout: 2000 })
       );
@@ -405,6 +435,60 @@ toggleOnOff: async (deviceIP: string) => {
       console.error(`Error setting custom effect on ${deviceIP}:`, error);
     }
   },
+  
+  addFavoriteColor: (deviceIP: string, color: string) => {
+    set((state) => {
+      const device = state.devices[deviceIP];
+      if (!device) return state;
+      if (device.favoriteColors.length >= 10) return state; // Max 10
+      const updatedFavorites = [...device.favoriteColors, color];
+      return {
+        devices: {
+          ...state.devices,
+          [deviceIP]: {
+            ...device,
+            favoriteColors: updatedFavorites,
+          },
+        },
+      };
+    });
+  },
+
+  removeFavoriteColor: (deviceIP: string, index: number) => {
+    set((state) => {
+      const device = state.devices[deviceIP];
+      if (!device || index < 0 || index >= device.favoriteColors.length) return state;
+      const updatedFavorites = device.favoriteColors.filter((_, i) => i !== index);
+      return {
+        devices: {
+          ...state.devices,
+          [deviceIP]: {
+            ...device,
+            favoriteColors: updatedFavorites,
+          },
+        },
+      };
+    });
+  },
+
+  replaceFavoriteColor: (deviceIP: string, index: number, color: string) => {
+    set((state) => {
+      const device = state.devices[deviceIP];
+      if (!device || index < 0 || index >= device.favoriteColors.length) return state;
+      const updatedFavorites = [...device.favoriteColors];
+      updatedFavorites[index] = color; // Replace at index
+      return {
+        devices: {
+          ...state.devices,
+          [deviceIP]: {
+            ...device,
+            favoriteColors: updatedFavorites,
+          },
+        },
+      };
+    });
+  },
+
 }));
 
 export default useDeviceStore;

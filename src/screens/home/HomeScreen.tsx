@@ -21,12 +21,17 @@ const HomeScreen: React.FC = () => {
 
   return (
     <ScrollView style={styles.scrollContainer}>
-      <View style={styles.container}>
+        <View style={styles.container}>
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Quick Select (Coming Soon)</Text>
-          <Text style={styles.sectionText}>
-            This is a section to quickly select effects
-          </Text>
+          <Text style={styles.sectionTitle}>Summary</Text>
+          {Object.keys(devices).length === 0 ? (
+            <Text style={styles.sectionText}>
+              No devices found. Please add devices.
+            </Text>
+          ) : (
+            <Text style={styles.sectionText}>
+              Placeholder (Lights on, room)
+            </Text>)}
         </View>
         <TouchableOpacity style={styles.sectionContainer} onPress={handleDevicePress}>
           <Text style={styles.sectionTitle}>Devices</Text>
@@ -43,9 +48,22 @@ const HomeScreen: React.FC = () => {
                   onPress={handleDevicePress}
                 />
               ))}
+              {Object.entries(devices).map(([deviceIP, device]) => (
+                <HomeDeviceCard
+                  key={deviceIP}
+                  device={{ ip: deviceIP, ...device }}
+                  onPress={handleDevicePress}
+                />
+              ))}
             </View>
           )}
         </TouchableOpacity>
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Scenes (Coming Soon)</Text>
+          <Text style={styles.sectionText}>
+            This is a section to quickly select effects
+          </Text>
+        </View>
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Favorites (Coming Soon)</Text>
           <Text style={styles.sectionText}>
@@ -76,6 +94,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 10,
     shadowOffset: { width: 10, height: 10 },
+    elevation: 10,
     borderColor: 'black',
     borderWidth: 1,
   },

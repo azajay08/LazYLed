@@ -43,27 +43,39 @@ const HomeDeviceCard: React.FC<HomeDeviceCardProps> = ({ device, onPress }) => {
     <TouchableOpacity onPress={onPress} style={styles.deviceWrapper}>
       {isEffect && <EffectShadow />}
       <View style={[styles.deviceContainer, getDeviceShadow(device)]}>
+        <IconWithGradient
+          iconName="led-strip-variant"
+          size={40}
+          selectedColor={device.selectedColor}
+          effect={device.effectName || 'LEDs Off'}
+        />
+        <View style={styles.textWrapper}>
+
         <Text
           style={[
             styles.deviceTitle,
             device.effectName && device.effectName !== 'LEDs Off' && { color: 'white' },
           ]}
+            numberOfLines={2}
+            ellipsizeMode="tail"
+          
+          // minimumFontScale={0.1}
+          >
+            {device.deviceName || 'Unknown'}
+        </Text>
+          <Text style={
+            styles.sectionText
+          }
           numberOfLines={1}
           adjustsFontSizeToFit
-          minimumFontScale={0.6}
-        >
-          {device.deviceName || 'Unknown'}
-        </Text>
-        <IconWithGradient
-          iconName="led-strip-variant"
-          size={70}
-          selectedColor={device.selectedColor}
-          effect={device.effectName || 'LEDs Off'}
-        />
-        <Text style={styles.sectionText}>{device.effectName || 'Off'}</Text>
+          minimumFontScale={0.}
+          >{
+            device.effectName || 'Off'}
+          </Text>
         {device.effectName !== 'LEDs Off' && (
           <Text style={styles.sectionText}>{device.brightness || 0}%</Text>
         )}
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -72,41 +84,37 @@ const HomeDeviceCard: React.FC<HomeDeviceCardProps> = ({ device, onPress }) => {
 const styles = StyleSheet.create({
   deviceWrapper: {
     width: 150,
-    height: 150,
+    height: 75,
     marginBottom: 20,
     position: 'relative',
   },
   deviceContainer: {
-    width: 150,
-    height: 150,
+    width: "100%",
+    height: "100%",
     alignItems: 'center',
     padding: 10,
     backgroundColor: 'rgb(10, 15, 20)',
     borderRadius: 20,
-    justifyContent: 'center',
     borderWidth: 0.5,
+    flexDirection: 'row',
     zIndex: 1,
+  },
+  textWrapper: {
+    marginLeft: 5
   },
   deviceTitle: {
     color: 'rgba(255, 255, 255, 0.7)',
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'center',
-    maxWidth: 130,
+    maxWidth: 85,
+    marginBottom: 2
   },
   sectionText: {
-    fontSize: 14,
+    fontSize: 10,
     color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
-  },
-  shadowSquare: {
-    width: 100,
-    height: 100,
-    position: 'absolute',
-    shadowOpacity: 1,
-    shadowRadius: 14,
-    elevation: 5,
-    borderRadius: 10,
+    maxWidth: 85
   },
 });
 

@@ -2,14 +2,6 @@
   "migIndex": 1,
   "data": [
     {
-      "path": "assets/images/lazyimage.png",
-      "sha1": "09a463aa1e937470d1caec50bfbfd92f22229d2c"
-    },
-    {
-      "path": "assets/images/temp.svg",
-      "sha1": "974dbe8dbc01f700d047f21d8f27aa48bb2620c4"
-    },
-    {
       "path": "assets/fonts/Orbitron-Black.ttf",
       "sha1": "19c4f40df75add673845967c2991ea6801442b0b"
     },
@@ -32,6 +24,42 @@
     {
       "path": "assets/fonts/Orbitron-SemiBold.ttf",
       "sha1": "1cb2e91b14b62bb9c72eda60db0600feb01ce93a"
+    },
+    {
+      "path": "assets/fonts/SmoochSans-Black.ttf",
+      "sha1": "f327cedf2915cbaf59ffb0fe317463dac1fb482d"
+    },
+    {
+      "path": "assets/fonts/SmoochSans-Bold.ttf",
+      "sha1": "406c5e30a3003bfd790da9c1d72857d0c039c120"
+    },
+    {
+      "path": "assets/fonts/SmoochSans-ExtraBold.ttf",
+      "sha1": "dc9f02c4cb0d23b391c1e1c3a48624e82d6f5946"
+    },
+    {
+      "path": "assets/fonts/SmoochSans-ExtraLight.ttf",
+      "sha1": "d46a9586157f62c6e3ac766f71689e7f49b578e7"
+    },
+    {
+      "path": "assets/fonts/SmoochSans-Light.ttf",
+      "sha1": "5a4722fec4855620a4c5c1e2abcdf727895ad5d9"
+    },
+    {
+      "path": "assets/fonts/SmoochSans-Medium.ttf",
+      "sha1": "7ee85dc68828770fbf8c8ebfe2ca42d04479f111"
+    },
+    {
+      "path": "assets/fonts/SmoochSans-Regular.ttf",
+      "sha1": "8267c5bced1b772b24c1be4e95cbd15e7ed2597a"
+    },
+    {
+      "path": "assets/fonts/SmoochSans-SemiBold.ttf",
+      "sha1": "95720ef3488c4ea5be0354ebf97d873bed440dff"
+    },
+    {
+      "path": "assets/fonts/SmoochSans-Thin.ttf",
+      "sha1": "1c6a80d1d0b0a0afc9373a9bbff4a60d76592874"
     },
     {
       "path": "assets/fonts/TrainOne-Regular.ttf",
