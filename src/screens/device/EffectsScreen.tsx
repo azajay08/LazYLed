@@ -9,11 +9,12 @@ import {
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { DeviceStackParamList } from './DeviceStackScreen';
-import useDeviceStore, { Effect, HsvColor } from '../../stores/deviceStore';
+import useDeviceStore, { HsvColor } from '../../stores/deviceStore';
 import { hexToHsv } from '../../utils/hexToHsv';
 import SpeedSection from './deviceComponents/SpeedSection';
 import ToggleSection from './deviceComponents/ToggleSection';
 import ColorSection from './deviceComponents/ColorSection';
+import IonIcons from 'react-native-vector-icons/Ionicons';
 
 type EffectsNavigationProp = StackNavigationProp<DeviceStackParamList, 'EffectsPage'>;
 type EffectsRouteProp = RouteProp<DeviceStackParamList, 'EffectsPage'>;
@@ -60,13 +61,13 @@ const EffectsScreen: React.FC<EffectsScreenProps> = ({ navigation, route }) => {
       <View style={styles.topContainer}>
         <View style={styles.topRow}>
           <TouchableOpacity
-            style={styles.uniformButton}
+            style={[styles.uniformButton, {width : '15%'}]}
             onPress={() => navigation.replace('EffectPickerScreen', { deviceIp })}
           >
-            <Text style={styles.buttonText}>{'<'}</Text>
+            <IonIcons style={{alignContent: 'center'} } name={'return-up-back'} color={'cyan'} size={25}/>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.uniformButton, { backgroundColor: 'cyan', borderColor: 'black' }]}
+            style={[styles.uniformButton, {width : '78%', backgroundColor: 'cyan', borderColor: 'black' }]}
             onPress={activateEffect}
           >
             <Text style={[styles.buttonText, { color: 'black' }]}>Run Effect</Text>
@@ -117,27 +118,23 @@ const styles = StyleSheet.create({
   topContainer: {
     borderRadius: 15,
     padding: 20,
-    // marginBottom: 10,
   },
   topRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    gap: 40,
+    gap: 20,
     marginBottom: 20,
   },
   uniformButton: {
-    flex: 1,
-    width: 120,
-    paddingVertical: 10,
-    // marginHorizontal: 15,
+    height: 50,
+    justifyContent: 'center',
     backgroundColor: 'rgb(22, 24, 29)',
     borderRadius: 10,
     borderWidth: 0.5,
     borderColor: 'black',
     shadowColor: 'black',
     shadowOffset: { width: 10, height: 10 },
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.9,
     shadowRadius: 10,
     alignItems: 'center',
   },

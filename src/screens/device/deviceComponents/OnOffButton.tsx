@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import useDeviceStore from '../../../stores/deviceStore';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 interface OnOffButtonProps {
   isOnOff: string;
@@ -13,7 +14,13 @@ const OnOffButton: React.FC<OnOffButtonProps> = ({ isOnOff, deviceIp }) => {
   const brightness = useDeviceStore((state) => state.devices[deviceIp]?.brightness);
   const isOff = isOnOff === 'LEDs Off' || isOnOff === 'Unavailable' || brightness === 0;
 
+  const options = {
+    enableVibrateFallback: true,
+    ignoreAndroidSystemSettings: false,
+  };
+
   const handlePress = () => {
+    ReactNativeHapticFeedback.trigger('impactLight', options);
     toggleOnOff(deviceIp);
   };
 

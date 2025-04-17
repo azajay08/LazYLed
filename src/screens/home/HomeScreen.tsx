@@ -1,6 +1,12 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import useDeviceStore from '../../stores/deviceStore';
+import React, {useEffect} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
+import useDeviceStore from '../../stores/deviceStore'; // Adjust path if needed
 import { useNavigation } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import HomeDeviceCard from './HomeDeviceCard';
@@ -12,16 +18,21 @@ type RootTabParamList = {
 };
 
 const HomeScreen: React.FC = () => {
-  const { devices } = useDeviceStore();
+  const { devices, scenes, applyScene } = useDeviceStore(); // Added scenes, applyScene
   const navigation = useNavigation<BottomTabNavigationProp<RootTabParamList>>();
 
   const handleDevicePress = () => {
     navigation.navigate('Devices');
   };
 
+  const handleScenePress = (index: number) => {
+    applyScene(index); // Apply the scene when tapped
+  };
+
   return (
     <ScrollView style={styles.scrollContainer}>
-        <View style={styles.container}>
+      <View style={styles.container}>
+        {/* Summary Section */}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Summary</Text>
           {Object.keys(devices).length === 0 ? (
@@ -31,8 +42,11 @@ const HomeScreen: React.FC = () => {
           ) : (
             <Text style={styles.sectionText}>
               Placeholder (Lights on, room)
-            </Text>)}
+            </Text>
+          )}
         </View>
+
+        {/* Devices Section */}
         <TouchableOpacity style={styles.sectionContainer} onPress={handleDevicePress}>
           <Text style={styles.sectionTitle}>Devices</Text>
           {Object.keys(devices).length === 0 ? (
@@ -43,14 +57,7 @@ const HomeScreen: React.FC = () => {
             <View style={styles.sectionContentContainer}>
               {Object.entries(devices).map(([deviceIP, device]) => (
                 <HomeDeviceCard
-                  key={deviceIP}
-                  device={{ ip: deviceIP, ...device }}
-                  onPress={handleDevicePress}
-                />
-              ))}
-              {Object.entries(devices).map(([deviceIP, device]) => (
-                <HomeDeviceCard
-                  key={deviceIP}
+                  key={deviceIP} // Removed duplicate map
                   device={{ ip: deviceIP, ...device }}
                   onPress={handleDevicePress}
                 />
@@ -58,12 +65,30 @@ const HomeScreen: React.FC = () => {
             </View>
           )}
         </TouchableOpacity>
+
+        {/* Scenes Section */}
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Scenes (Coming Soon)</Text>
-          <Text style={styles.sectionText}>
-            This is a section to quickly select effects
-          </Text>
+          <Text style={styles.sectionTitle}>Scenes</Text>
+          {scenes.length === 0 ? (
+            <Text style={styles.sectionText}>
+              No scenes created yet. Add a scene to get started!
+            </Text>
+          ) : (
+            <View style={styles.sectionContentContainer}>
+              {scenes.map((scene, index) => (
+                <TouchableOpacity
+                  key={scene.name + index}
+                  style={styles.sceneCard}
+                  onPress={() => handleScenePress(index)}
+                >
+                  <Text style={styles.sceneText}>{scene.name}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
         </View>
+
+        {/* Favorites Section */}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>Favorites (Coming Soon)</Text>
           <Text style={styles.sectionText}>
@@ -114,6 +139,19 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  sceneCard: {
+    backgroundColor: 'rgb(30, 35, 40)',
+    padding: 10,
+    borderRadius: 10,
+    margin: 5,
+    width: '45%', // Adjust for two-column layout
+    alignItems: 'center',
+  },
+  sceneText: {
+    fontSize: 14,
+    color: 'rgb(0, 255, 255)',
+    fontWeight: '600',
   },
 });
 

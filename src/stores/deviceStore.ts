@@ -51,10 +51,35 @@ export interface Device {
   effectsList: Effect[];
   lastState?: LastState;
   favoriteColors: string[];
+  favoriteEffects: FavoriteCustomEffect[]; // New
+}
+
+interface FavoriteCustomEffect {
+  name: string;
+  functionNumber: number;
+  speed?: number;
+  colors?: HsvColor[];
+  moving?: boolean;
+  reverse?: boolean;
+  blend?: boolean;
+}
+
+interface SceneDeviceState {
+  selectedColor: string;
+  effectNumber: string | number;
+  effectName: string;
+  brightness: number;
+  customEffect?: CustomEffectPayload;
+}
+
+interface Scene {
+  name: string; // e.g., "Cozy Evening"
+  devices: Record<string, SceneDeviceState>; // IP -> state
 }
 
 interface DeviceState {
   devices: Record<string, Device>;
+  scenes: Scene[]; // New
   syncMode: boolean;
   toggleSyncMode: () => void;
   addDevice: (deviceIP: string) => Promise<void>;
@@ -78,39 +103,47 @@ interface DeviceState {
   setDeviceName: (deviceIP: string, name: string) => void;
   removeDevice: (deviceIP: string) => void;
   addFavoriteColor: (deviceIP: string, color: string) => void;
-  removeFavoriteColor: (deviceIP: string, index: number) => void; // New
-  replaceFavoriteColor: (deviceIP: string, index: number, color: string) => void; // New
+  removeFavoriteColor: (deviceIP: string, index: number) => void;
+  replaceFavoriteColor: (deviceIP: string, index: number, color: string) => void;
+  addFavoriteEffect: (deviceIP: string, effect: FavoriteCustomEffect) => void; // New
+  removeFavoriteEffect: (deviceIP: string, index: number) => void; // New
+  applyFavoriteEffect: (deviceIP: string, index: number) => Promise<void>; // New
+  addScene: (name: string, deviceConfigs: { ip: string; state: Partial<SceneDeviceState> }[]) => void;
+  removeScene: (index: number) => void;
+  applyScene: (index: number) => Promise<void>;
 }
 
 const useDeviceStore = create<DeviceState>((set, get) => ({
   devices: {},
   syncMode: false,
+  scenes: [],
 
   toggleSyncMode: () => set((state) => ({ syncMode: !state.syncMode })),
 
   addDevice: async (deviceIP: string) => {
-    set((state) => ({
-      devices: {
-        ...state.devices,
-        [deviceIP]: {
-          status: "Loading...",
-          selectedColor: "#FFFFFF",
-          color: "Unknown",
-          effectNumber: 0,
-          effectName: "Unknown",
-          brightness: 0,
-          deviceName: "Unknown",
-          effectCount: 0,
-          roomName: "Unknown",
-          effectsList: [],
-          favoriteColors: ["#FFFFFF"],
-        },
+  set((state) => ({
+    devices: {
+      ...state.devices,
+      [deviceIP]: {
+        status: "Loading...",
+        selectedColor: "#FFFFFF",
+        color: "Unknown",
+        effectNumber: 0,
+        effectName: "Unknown",
+        brightness: 0,
+        deviceName: "Unknown",
+        effectCount: 0,
+        roomName: "Unknown",
+        effectsList: [],
+        favoriteColors: ["#FFFFFF"],
+        favoriteEffects: [],
       },
-    }));
+    },
+  }));
 
-    await get().fetchDeviceData(deviceIP);
-    await get().fetchDeviceStatus(deviceIP);
-  },
+  await get().fetchDeviceData(deviceIP);
+  await get().fetchDeviceStatus(deviceIP);
+},
 
   setDeviceName: (deviceIP: string, name: string) => {
     set((state) => ({
@@ -487,6 +520,121 @@ const useDeviceStore = create<DeviceState>((set, get) => ({
         },
       };
     });
+  },
+
+  addFavoriteEffect: (deviceIP: string, effect: FavoriteCustomEffect) => {
+    set((state) => {
+      const device = state.devices[deviceIP];
+      if (!device || device.favoriteEffects.length >= 10) return state; // Max 10
+      const updatedEffects = [...device.favoriteEffects, effect];
+      return {
+        devices: {
+          ...state.devices,
+          [deviceIP]: {
+            ...device,
+            favoriteEffects: updatedEffects,
+          },
+        },
+      };
+    });
+  },
+
+  removeFavoriteEffect: (deviceIP: string, index: number) => {
+    set((state) => {
+      const device = state.devices[deviceIP];
+      if (!device || index < 0 || index >= device.favoriteEffects.length) return state;
+      const updatedEffects = device.favoriteEffects.filter((_, i) => i !== index);
+      return {
+        devices: {
+          ...state.devices,
+          [deviceIP]: {
+            ...device,
+            favoriteEffects: updatedEffects,
+          },
+        },
+      };
+    });
+  },
+
+  applyFavoriteEffect: async (deviceIP: string, index: number) => {
+    const { devices, setCustomEffect } = get();
+    const device = devices[deviceIP];
+    if (!device || index < 0 || index >= device.favoriteEffects.length) return;
+    const effect = device.favoriteEffects[index];
+    await setCustomEffect(
+      deviceIP,
+      effect.functionNumber,
+      effect.speed,
+      effect.colors,
+      effect.moving,
+      effect.reverse,
+      effect.blend
+    );
+  },
+
+  addScene: (name: string, deviceConfigs: { ip: string; state: Partial<SceneDeviceState> }[]) => {
+    set((storeState) => {
+      const devicesState: Record<string, SceneDeviceState> = {};
+      deviceConfigs.forEach(({ ip, state: configState }) => {
+        const device = storeState.devices[ip];
+        if (device) {
+          devicesState[ip] = {
+            selectedColor: configState.selectedColor || device.selectedColor || '#FFFFFF',
+            effectNumber: configState.effectNumber ?? device.effectNumber ?? 0,
+            effectName: configState.effectName || device.effectName || 'Unknown',
+            brightness: configState.brightness ?? device.brightness ?? 100,
+            customEffect: configState.customEffect || device.lastState?.customEffect,
+          };
+        }
+      });
+      const newScene: Scene = { name, devices: devicesState };
+      return {
+        scenes: [...storeState.scenes, newScene],
+      };
+    });
+  },
+
+  removeScene: (index: number) => {
+    set((state) => {
+      if (index < 0 || index >= state.scenes.length) return state;
+      const updatedScenes = state.scenes.filter((_, i) => i !== index);
+      return { scenes: updatedScenes };
+    });
+  },
+
+  applyScene: async (index: number) => {
+    const { scenes, setColor, setEffect, setCustomEffect, setBrightness } = get();
+    if (index < 0 || index >= scenes.length) return;
+    const scene = scenes[index];
+    const requests: Promise<void>[] = [];
+
+    Object.entries(scene.devices).forEach(([ip, state]) => {
+      if (state.customEffect) {
+        requests.push(
+          setCustomEffect(
+            ip,
+            state.customEffect.functionNumber,
+            state.customEffect.speed,
+            state.customEffect.colors,
+            state.customEffect.moving,
+            state.customEffect.reverse,
+            state.customEffect.blend
+          )
+        );
+      } else if (state.effectName === "Solid Color") {
+        const hsv = hexToHsv(state.selectedColor);
+        requests.push(setColor(ip, hsv));
+      } else {
+        requests.push(setEffect(ip, Number(state.effectNumber)));
+      }
+      requests.push(setBrightness(ip, state.brightness));
+    });
+
+    try {
+      await Promise.all(requests);
+    } catch (error) {
+      console.error("Error applying scene:", error);
+    }
   },
 
 }));

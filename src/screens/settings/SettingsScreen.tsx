@@ -39,7 +39,7 @@ const SettingsScreen: React.FC = () => {
           <Text style={styles.deviceText}>{device.deviceName || 'Unknown'}</Text>
           <Text style={styles.deviceSubText}>{device.roomName}</Text>
           <Text style={styles.deviceSubText}>{'192.0.2.42 (example)'}</Text>
-          {/* <Text style={styles.deviceSubText}>{ip}</Text> */}
+          <Text style={styles.deviceSubText}>{ip}</Text>
           <Text style={styles.deviceSubText}>Status: {device.status}</Text>
         </View>
         <View style={styles.deviceActions}>
