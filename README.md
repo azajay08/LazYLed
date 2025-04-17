@@ -39,6 +39,7 @@ https://github.com/user-attachments/assets/66533fbb-16c3-47a9-8dcd-73ee11b76616
   * Colours
   * Swatches
   * Effects (Custom and presets)
+  * Scenes
 * More Effects
 * Profile
 * Settings
