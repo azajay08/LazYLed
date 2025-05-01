@@ -11,9 +11,9 @@ import { RouteProp } from '@react-navigation/native';
 import { DeviceStackParamList } from './DeviceStackScreen';
 import useDeviceStore, { HsvColor } from '../../stores/deviceStore';
 import { hexToHsv } from '../../utils/hexToHsv';
-import SpeedSection from './deviceComponents/SpeedSection';
-import ToggleSection from './deviceComponents/ToggleSection';
-import ColorSection from './deviceComponents/ColorSection';
+import SpeedSection from '../../components/SpeedSection';
+import ToggleSection from '../../components/ToggleSection';
+import ColorSection from '../../components/ColorSection';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 
 type EffectsNavigationProp = StackNavigationProp<DeviceStackParamList, 'EffectsPage'>;
@@ -27,17 +27,17 @@ interface EffectsScreenProps {
 const EffectsScreen: React.FC<EffectsScreenProps> = ({ navigation, route }) => {
   const { deviceIp, selectedEffect: initialEffect } = route.params;
   const { devices, setEffect, setCustomEffect } = useDeviceStore();
-  const device = devices[deviceIp] || {};
-  const effectsList = (device.effectsList || []).filter((effect) => effect.functionNumber !== 0);
 
-  const selectedEffect = initialEffect || effectsList[0];
+  const selectedEffect = initialEffect
   const [speed, setSpeed] = useState<number>(20);
   const [colors, setColors] = useState<string[]>(['']);
   const [isMoving, setIsMoving] = useState<boolean>(false);
   const [isReverse, setIsReverse] = useState<boolean>(false);
+  const [blendOn, setBlendOn] = useState<boolean>(false);
 
   const toggleMoving = (value: boolean) => setIsMoving(value);
   const toggleReverse = (value: boolean) => setIsReverse(value);
+  const toggleBlendOn = (value: boolean) => setBlendOn(value);
 
   const invertSpeed = (speed: number) => 50 - speed;
 
@@ -47,9 +47,9 @@ const EffectsScreen: React.FC<EffectsScreenProps> = ({ navigation, route }) => {
     if (selectedEffect.colorParams > 0 || selectedEffect.speedParams > 0) {
       const colorValues: HsvColor[] = validColors.map((color) => hexToHsv(color));
       if (isMoving && selectedEffect.moving) {
-        setCustomEffect(deviceIp, selectedEffect.functionNumber, invertSpeed(speed), colorValues, true, isReverse);
+        setCustomEffect(deviceIp, selectedEffect.functionNumber, invertSpeed(speed), colorValues, true, isReverse, blendOn);
       } else {
-        setCustomEffect(deviceIp, selectedEffect.functionNumber, invertSpeed(speed), colorValues);
+        setCustomEffect(deviceIp, selectedEffect.functionNumber, invertSpeed(speed), colorValues, false, false, blendOn);
       }
     } else {
       setEffect(deviceIp, selectedEffect.functionNumber);
@@ -100,6 +100,8 @@ const EffectsScreen: React.FC<EffectsScreenProps> = ({ navigation, route }) => {
                 toggleMoving={toggleMoving}
                 isReverse={isReverse}
                 toggleReverse={toggleReverse}
+                blendOn={blendOn}
+                toggleBlendOn={toggleBlendOn}
               />
             )}
           </>

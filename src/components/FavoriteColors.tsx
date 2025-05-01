@@ -12,13 +12,15 @@ interface FavoriteColorsProps {
   wheelColor: string;
   handleColorChange?: (color: string) => void;
   handleEdit?: () => void;
+  styleColor?: string;
 }
 
 const FavoriteColors: React.FC<FavoriteColorsProps> = ({
   deviceIp,
   wheelColor,
   handleColorChange,
-  handleEdit
+  handleEdit,
+  styleColor = 'cyan'
 }) => {
   const [selectedColorIndex, setSelectedColorIndex] = useState<number>();
   const [editPalette, setEditPalette] = useState(false);
@@ -87,22 +89,22 @@ const FavoriteColors: React.FC<FavoriteColorsProps> = ({
   }
 
   return (
-    <Animated.View style={[styles.container, glowStyle]}>
+    <Animated.View style={[styles.container, glowStyle, {shadowColor: styleColor}]}>
 
       <View style={styles.titleContainer}>
-        <Text style={styles.favoriteHeaderText}>
+        <Text style={[styles.favoriteHeaderText, {color: styleColor}]}>
           Favorite Colors
         </Text>
         {editPalette ? (
           <TouchableOpacity
-            style={[styles.uniformButton, { backgroundColor: 'cyan' }]}
+            style={[styles.uniformButton, { backgroundColor: styleColor, borderColor: styleColor }]}
             onPress={handlePaletteEditing}
           >
             <MaterialIcons name={'done'} color='black' size={20} />
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity style={styles.uniformButton} onPress={handlePaletteEditing}>
-              <MaterialIcons name={'edit'} color='cyan' size={20} />
+          <TouchableOpacity style={[styles.uniformButton, {borderColor: styleColor}]} onPress={handlePaletteEditing}>
+              <MaterialIcons name={'edit'} color={styleColor} size={20} />
           </TouchableOpacity>
         )}
       </View>
@@ -111,8 +113,8 @@ const FavoriteColors: React.FC<FavoriteColorsProps> = ({
         {favoriteColors.map((color, index) => renderFavoriteColors(color, index))}
         {favoriteColors.length < 10 && (
           <View style={styles.colorItem}>
-            <TouchableOpacity style={styles.addButton} onPress={handleAddToFavorites}>
-              <Text style={styles.addText}>+</Text>
+            <TouchableOpacity style={[styles.addButton, {shadowColor: styleColor}]} onPress={handleAddToFavorites}>
+              <Text style={[styles.addText, {color: styleColor}]}>+</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -128,7 +130,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: 'black',
     borderWidth: 1,
-    shadowColor: 'cyan',
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.9,
     shadowRadius: 5,
@@ -173,14 +174,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 2,
     borderColor: 'black',
-    shadowColor: 'cyan',
     shadowOpacity: 0.9,
     shadowRadius: 5,
     shadowOffset: { width: 0, height: 1 },
   },
   addText: {
     fontSize: 20,
-    color: 'cyan',
   },
   selectedColorSquare: {
     borderWidth: 0,
@@ -195,7 +194,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(10, 15, 20, 1)',
     borderRadius: 8,
     borderWidth: 0.5,
-    borderColor: 'cyan',
     shadowColor: 'black',
     shadowOffset: { width: 10, height: 10 },
     shadowOpacity: 0.5,
@@ -210,7 +208,6 @@ const styles = StyleSheet.create({
   favoriteHeaderText: {
     fontSize: 16,
     fontWeight: 'bold' as const,
-    color: 'rgb(0, 255, 255)',
   },
   cancelButton: {
     width: 20,

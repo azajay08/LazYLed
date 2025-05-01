@@ -4,7 +4,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import useDeviceStore from '../../stores/deviceStore';
 import OnOffButton from './deviceComponents/OnOffButton';
-import DropdownComponent from './deviceComponents/DropdownComponent';
 import BrightnessSlider from './deviceComponents/BrightnessSlider';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { DeviceStackParamList } from './DeviceStackScreen';
@@ -69,7 +68,6 @@ const DeviceCard: React.FC<DeviceCardProps> = memo(({ deviceIp, device, navigati
         style={[
           styles.sectionContainer,
           isEffectRunning && { shadowOpacity: 0 },
-          isCollapsed && styles.collapsedContainer,
           device.effectName === 'Solid Color' && { shadowColor: device.color || 'cyan' },
         ]}
       >
@@ -113,7 +111,7 @@ const DeviceCard: React.FC<DeviceCardProps> = memo(({ deviceIp, device, navigati
                 onPress={() => cycleEffect(deviceIp)}
                 style={styles.pressableContainer}
               >
-                <MaterialIcons name="loop" size={20} color="cyan" style={styles.icon} />
+                <MaterialIcons name="loop" size={20} color="white" style={styles.icon} />
                 <Text style={styles.pressableText}>Cycle Effect</Text>
               </TouchableOpacity>
             </View>
@@ -150,8 +148,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 15,
     shadowOffset: { width: 0, height: 0 },
-  },
-  collapsedContainer: {
     paddingVertical: 10,
   },
   rowView: {
@@ -175,7 +171,7 @@ const styles = StyleSheet.create({
   },
   sectionContent: {
     fontSize: 14,
-    color: 'white',
+    color: 'rgba(255, 255, 255, 0.7)',
   },
   effectContainer: {
     flexDirection: 'row' as const,
@@ -186,19 +182,19 @@ const styles = StyleSheet.create({
   pressableContainer: {
     flexDirection: 'row' as const,
     alignItems: 'center' as const,
-    padding: 8,
+    padding: 12,
     backgroundColor: 'rgb(10, 15, 20)',
     borderRadius: 10,
-    shadowColor: 'black',
+    shadowColor: 'cyan',
     shadowOpacity: 0.8,
-    shadowRadius: 10,
-    shadowOffset: { width: 5, height: 5 },
-    borderColor: 'cyan',
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 0 },
+    borderColor: 'black',
     borderWidth: 0.5,
   },
   pressableText: {
     fontSize: 15,
-    color: 'cyan',
+    color: 'white',
   },
   icon: {
     marginLeft: -2,

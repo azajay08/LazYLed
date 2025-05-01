@@ -137,20 +137,20 @@ const AddDeviceScreen: React.FC = () => {
               value={tempDeviceName}
               onChangeText={setTempDeviceName}
               placeholder="Enter device name"
-              placeholderTextColor="rgba(0, 255, 255, 0.5)"
+              placeholderTextColor="rgb(150, 150, 150)"
             />
             <View style={styles.modalButtons}>
               <TouchableOpacity
                 style={styles.modalButton}
-                onPress={() => setModalVisible(false)}
-              >
-                <Text style={styles.modalButtonText}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.modalButton}
                 onPress={handleAddDevice}
               >
-                <Text style={styles.modalButtonText}>Add</Text>
+                <Text style={styles.modalButtonText}>Add Device</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.modalButton, { backgroundColor: 'rgb(40, 42, 42)' }]}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={[styles.modalButtonText, { color: 'cyan' }]}>Cancel</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -232,13 +232,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center' as const,
     alignItems: 'center' as const,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
   },
   modalContainer: {
-    width: '80%',
+    width: '90%',
     padding: 20,
-    backgroundColor: 'rgb(10,15,20)',
-    borderRadius: 10,
+    backgroundColor: 'rgb(22, 24, 29)',
+    borderRadius: 20,
     borderWidth: 1,
     borderColor: 'black',
     shadowColor: 'black',
@@ -250,33 +250,35 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold' as const,
     color: 'cyan',
-    marginBottom: 15,
+    marginBottom: 20,
     textAlign: 'center' as const,
   },
   input: {
     width: '100%',
     padding: 10,
-    backgroundColor: 'rgb(22, 24, 29)',
+    height: 50,
+    backgroundColor: 'rgb(30, 35, 40)',
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: 'black',
-    color: 'cyan',
+    borderColor: 'cyan',
+    color: 'white',
     fontSize: 16,
     marginBottom: 20,
     shadowColor: 'black',
     shadowOpacity: 1,
     shadowRadius: 8,
-    shadowOffset: { width: 0, height: 0 },
+    shadowOffset: { width: 5, height: 5 },
   },
   modalButtons: {
-    flexDirection: 'row' as const,
+    // flexDirection: 'row' as const,
     justifyContent: 'space-between' as const,
     
   },
   modalButton: {
     padding: 10,
-    width: '45%',
-    backgroundColor: 'rgb(22, 24, 29)',
+    height: 50,
+    marginVertical: 10,
+    backgroundColor: 'cyan',
     borderRadius: 8,
     alignItems: 'center' as const,
     borderWidth: 1,
@@ -284,11 +286,13 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOpacity: 0.8,
     shadowRadius: 10,
-    shadowOffset: { width: 10, height: 10 },
+    shadowOffset: { width: 5, height: 5 },
+    justifyContent: 'center' as const,
   },
   modalButtonText: {
     fontSize: 16,
-    color: 'cyan',
+    color: 'black',
+    fontWeight: 'bold' as const,
   },
 });
 

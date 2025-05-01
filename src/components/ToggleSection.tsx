@@ -6,6 +6,9 @@ interface ToggleSectionProps {
   toggleMoving: (value: boolean) => void;
   isReverse: boolean;
   toggleReverse: (value: boolean) => void;
+  blendOn?: boolean;
+  toggleBlendOn?: (value: boolean) => void;
+  styleColor?: string;
 }
 
 const ToggleSection: React.FC<ToggleSectionProps> = ({
@@ -13,24 +16,36 @@ const ToggleSection: React.FC<ToggleSectionProps> = ({
   toggleMoving,
   isReverse,
   toggleReverse,
+  blendOn,
+  toggleBlendOn,
+  styleColor = 'cyan'
 }) => {
   return (
     <View style={styles.toggleSection}>
       <View style={styles.toggleContainer}>
-        <Text style={styles.toggleLabel}>Moving</Text>
+        <Text style={[styles.toggleLabel, {color: styleColor}]}>Moving</Text>
         <Switch
           value={isMoving}
           onValueChange={toggleMoving}
-          trackColor={{ false: 'black', true: 'cyan' }}
+          trackColor={{ false: 'black', true: styleColor }}
           thumbColor={isMoving ? 'black' : 'black'}
         />
       </View>
       <View style={styles.toggleContainer}>
-        <Text style={styles.toggleLabel}>Reverse</Text>
+        <Text style={[styles.toggleLabel, {color: styleColor}]}>Reverse</Text>
         <Switch
           value={isReverse}
           onValueChange={toggleReverse}
-          trackColor={{ false: 'black', true: 'cyan' }}
+          trackColor={{ false: 'black', true: styleColor }}
+          thumbColor={isReverse ? 'black' : 'black'}
+        />
+      </View>
+      <View style={styles.toggleContainer}>
+        <Text style={[styles.toggleLabel, {color: styleColor}]}>Blend</Text>
+        <Switch
+          value={blendOn}
+          onValueChange={toggleBlendOn}
+          trackColor={{ false: 'black', true: styleColor }}
           thumbColor={isReverse ? 'black' : 'black'}
         />
       </View>
@@ -60,7 +75,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 5, height: 5 },
   },
   toggleLabel: {
-    color: 'cyan',
     fontSize: 16,
     marginBottom: 5,
   },

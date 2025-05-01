@@ -9,7 +9,7 @@ export interface HsvColor {
   v: number;
 }
 
-interface CustomEffectPayload {
+export interface CustomEffectPayload {
   functionNumber: number;
   speed?: number;
   colors?: HsvColor[];
@@ -51,7 +51,7 @@ export interface Device {
   effectsList: Effect[];
   lastState?: LastState;
   favoriteColors: string[];
-  favoriteEffects: FavoriteCustomEffect[]; // New
+  favoriteEffects: FavoriteCustomEffect[];
 }
 
 interface FavoriteCustomEffect {
@@ -64,11 +64,12 @@ interface FavoriteCustomEffect {
   blend?: boolean;
 }
 
-interface SceneDeviceState {
-  selectedColor: string;
+export interface SceneDeviceState {
+  selectedColor?: string;
   effectNumber: string | number;
   effectName: string;
   brightness: number;
+  custom: boolean;
   customEffect?: CustomEffectPayload;
 }
 
@@ -79,7 +80,7 @@ interface Scene {
 
 interface DeviceState {
   devices: Record<string, Device>;
-  scenes: Scene[]; // New
+  scenes: Scene[];
   syncMode: boolean;
   toggleSyncMode: () => void;
   addDevice: (deviceIP: string) => Promise<void>;
@@ -105,12 +106,13 @@ interface DeviceState {
   addFavoriteColor: (deviceIP: string, color: string) => void;
   removeFavoriteColor: (deviceIP: string, index: number) => void;
   replaceFavoriteColor: (deviceIP: string, index: number, color: string) => void;
-  addFavoriteEffect: (deviceIP: string, effect: FavoriteCustomEffect) => void; // New
-  removeFavoriteEffect: (deviceIP: string, index: number) => void; // New
-  applyFavoriteEffect: (deviceIP: string, index: number) => Promise<void>; // New
+  addFavoriteEffect: (deviceIP: string, effect: FavoriteCustomEffect) => void;
+  removeFavoriteEffect: (deviceIP: string, index: number) => void;
+  applyFavoriteEffect: (deviceIP: string, index: number) => Promise<void>;
   addScene: (name: string, deviceConfigs: { ip: string; state: Partial<SceneDeviceState> }[]) => void;
   removeScene: (index: number) => void;
   applyScene: (index: number) => Promise<void>;
+  updateScene: (index: number, name: string, deviceConfigs: { ip: string; state: Partial<SceneDeviceState> }[]) => void
 }
 
 const useDeviceStore = create<DeviceState>((set, get) => ({
@@ -441,6 +443,7 @@ const useDeviceStore = create<DeviceState>((set, get) => ({
       if (colors) payload.colors = colors;
       if (moving) payload.moving = moving;
       if (reverse) payload.reverse = reverse;
+      if (blend) payload.blend = blend;
       console.log(payload);
       const requests = deviceIPs.map(ip =>
         axios.post(`http://${ip}/setCustomEffect`, payload, { timeout: 2000 })
@@ -583,6 +586,7 @@ const useDeviceStore = create<DeviceState>((set, get) => ({
             effectNumber: configState.effectNumber ?? device.effectNumber ?? 0,
             effectName: configState.effectName || device.effectName || 'Unknown',
             brightness: configState.brightness ?? device.brightness ?? 100,
+            custom: configState.custom ?? device.effectName === 'Solid Color' ? false : true,
             customEffect: configState.customEffect || device.lastState?.customEffect,
           };
         }
@@ -609,7 +613,7 @@ const useDeviceStore = create<DeviceState>((set, get) => ({
     const requests: Promise<void>[] = [];
 
     Object.entries(scene.devices).forEach(([ip, state]) => {
-      if (state.customEffect) {
+      if (state.custom === true && state.customEffect) {
         requests.push(
           setCustomEffect(
             ip,
@@ -622,8 +626,10 @@ const useDeviceStore = create<DeviceState>((set, get) => ({
           )
         );
       } else if (state.effectName === "Solid Color") {
-        const hsv = hexToHsv(state.selectedColor);
-        requests.push(setColor(ip, hsv));
+        if (state.selectedColor) {
+          const hsv = hexToHsv(state.selectedColor);
+          requests.push(setColor(ip, hsv));
+        }
       } else {
         requests.push(setEffect(ip, Number(state.effectNumber)));
       }
@@ -635,6 +641,31 @@ const useDeviceStore = create<DeviceState>((set, get) => ({
     } catch (error) {
       console.error("Error applying scene:", error);
     }
+  },
+  updateScene: (index: number, name: string, deviceConfigs: { ip: string; state: Partial<SceneDeviceState> }[]) => {
+    set((state) => {
+      if (index < 0 || index >= state.scenes.length) return state;
+      const devicesState: Record<string, SceneDeviceState> = {};
+      deviceConfigs.forEach(({ ip, state: configState }) => {
+        const device = state.devices[ip];
+        if (device) {
+          devicesState[ip] = {
+            selectedColor: configState.selectedColor || device.selectedColor || '#FFFFFF',
+            effectNumber: configState.effectNumber ?? device.effectNumber ?? 0,
+            effectName: configState.effectName || device.effectName || 'Unknown',
+            brightness: configState.brightness ?? device.brightness ?? 100,
+            custom: configState.custom ?? device.effectName === 'Solid Color' ? false : true,
+            customEffect: configState.customEffect || device.lastState?.customEffect,
+          };
+        }
+      });
+      const updatedScene: Scene = { name, devices: devicesState };
+      const updatedScenes = [...state.scenes];
+      updatedScenes[index] = updatedScene;
+      return {
+        scenes: updatedScenes,
+      };
+    });
   },
 
 }));

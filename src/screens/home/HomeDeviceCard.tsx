@@ -6,10 +6,10 @@ import EffectShadow from './EffectShadow';
 
 interface HomeDeviceCardProps {
   device: Device & { ip: string };
-  onPress: () => void;
+  goToDeviceScreen: () => void;
 }
 
-const HomeDeviceCard: React.FC<HomeDeviceCardProps> = ({ device, onPress }) => {
+const HomeDeviceCard: React.FC<HomeDeviceCardProps> = ({ device, goToDeviceScreen }) => {
   const getDeviceShadow = (device: Device) => {
     const effectName = device.effectName || 'Unknown';
     if (effectName === 'Solid Color' && device.selectedColor) {
@@ -40,7 +40,7 @@ const HomeDeviceCard: React.FC<HomeDeviceCardProps> = ({ device, onPress }) => {
     device.effectName !== 'Solid Color';
 
   return (
-    <TouchableOpacity onPress={onPress} style={styles.deviceWrapper}>
+    <TouchableOpacity onPress={goToDeviceScreen} style={styles.deviceWrapper}>
       {isEffect && <EffectShadow />}
       <View style={[styles.deviceContainer, getDeviceShadow(device)]}>
         <IconWithGradient

@@ -1,46 +1,62 @@
 import React, {useState} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
-import FavoriteColors from '../../../components/FavoriteColors';
-import { Effect } from '../../../stores/deviceStore';
+import FavoriteColors from './FavoriteColors';
+import { Effect } from '../stores/deviceStore';
 
 interface ColorSectionProps {
-  selectedEffect: Effect;
+  containerNeeded?: boolean;
+  selectedEffect?: Effect;
   deviceIp: string;
-  colors: string[];
-  setColors: (colors: string[]) => void;
+  colors?: string[];
+  setWheelColor?: (color: string) => void;
+  setColors?: (colors: string[]) => void;
+  styleColor?: string;
 }
 
 const ColorSection: React.FC<ColorSectionProps> = ({
+  containerNeeded = true,
   selectedEffect,
   deviceIp,
   colors,
+  setWheelColor,
   setColors,
+  styleColor = 'cyan'
 }) => {
   const [selectedColorIndex, setSelectedColorIndex] = useState<number>(0);
+  const [solidColor, setSolidColor] = useState<string>('#FFFFFF');
   
   const handleColorChange = (color: string) => {
-    const newColors = [...colors];
-    newColors[selectedColorIndex] = color;
-    setColors(newColors);
+    if (setColors && colors) {
+      const newColors = [...colors];
+      newColors[selectedColorIndex] = color;
+      setColors(newColors);
+    } else if (setWheelColor){
+      setSolidColor(color);
+      setWheelColor(color);
+    }
   };
   
   const addColor = () => {
-    if (selectedEffect && colors.length < selectedEffect.colorParams) {
-      const newColors = [...colors, ''];
-      setColors(newColors);
-      setSelectedColorIndex(newColors.length - 1);
+    if (setColors && colors) {
+      if (selectedEffect && colors.length < selectedEffect.colorParams) {
+        const newColors = [...colors, ''];
+        setColors(newColors);
+        setSelectedColorIndex(newColors.length - 1);
+      }
     }
   };
   
   const removeColor = (index: number) => {
-    const newColors = colors.filter((_, i) => i !== index);
-    setColors(newColors);
-    if (newColors.length === 0) {
-      setColors(['']);
-      setSelectedColorIndex(0);
-    } else if (index <= selectedColorIndex) {
-      setSelectedColorIndex(Math.max(0, selectedColorIndex - 1));
+    if (setColors && colors) {
+      const newColors = colors.filter((_, i) => i !== index);
+      setColors(newColors);
+      if (newColors.length === 0) {
+        setColors(['']);
+        setSelectedColorIndex(0);
+      } else if (index <= selectedColorIndex) {
+        setSelectedColorIndex(Math.max(0, selectedColorIndex - 1));
+      }
     }
   };
   
@@ -65,23 +81,27 @@ const ColorSection: React.FC<ColorSectionProps> = ({
   );
 
   return (
-    <View style={styles.colorSection}>
-      <Text style={styles.label}>
+    <View style={containerNeeded && [styles.colorSection]}>
+      {(selectedEffect && colors) &&
+      <Text style={[styles.label, {color: styleColor}]}>
         Colors ({colors.filter((c) => c !== '').length}/{selectedEffect.colorParams})
       </Text>
+      }
+      {(selectedEffect && colors) &&
       <View style={styles.colorSquaresContainer}>
         {colors.map((color, index) => renderColorSquare(color, index))}
         {colors.length < selectedEffect.colorParams && (
           <View style={styles.colorItem}>
-            <TouchableOpacity style={styles.addButton} onPress={addColor}>
-              <Text style={styles.addText}>+</Text>
+            <TouchableOpacity style={[styles.addButton, {shadowColor: styleColor}]} onPress={addColor}>
+              <Text style={[styles.addText, {color: styleColor}]}>+</Text>
             </TouchableOpacity>
           </View>
         )}
       </View>
+      }
       <View style={styles.colorPickerContainer}>
         <ColorPicker
-          color={colors[selectedColorIndex] || '#FFFFFF'}
+          color={(colors && colors.length > 0 && colors[selectedColorIndex]) || solidColor}
           onColorChange={handleColorChange}
           swatches={false}
           sliderSize={20}
@@ -89,9 +109,10 @@ const ColorSection: React.FC<ColorSectionProps> = ({
         />
       </View>
       <FavoriteColors
-        wheelColor={colors[selectedColorIndex]}
+        wheelColor={(colors && colors.length > 0 && colors[selectedColorIndex]) || solidColor}
         deviceIp={deviceIp}
         handleColorChange={handleColorChange}
+        styleColor={styleColor}
       />
     </View>
   );
@@ -112,7 +133,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 5, height: 5 },
   },
   label: {
-    color: 'cyan',
     fontSize: 16,
     marginBottom: 10,
   },
@@ -173,14 +193,12 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     borderWidth: 2,
     borderColor: 'black',
-    shadowColor: 'cyan',
     shadowOpacity: 0.9,
     shadowRadius: 5,
     shadowOffset: { width: 0, height: 0 },
   },
   addText: {
     fontSize: 20,
-    color: 'cyan',
   },
   colorPickerContainer: {
     height: 280,

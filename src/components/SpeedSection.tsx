@@ -5,12 +5,17 @@ import Slider from '@react-native-community/slider';
 interface SpeedSectionProps {
   speed: number;
   setSpeed: (value: number) => void;
+  styleColor?: string;
 }
 
-const SpeedSection: React.FC<SpeedSectionProps> = ({ speed, setSpeed }) => {
+const SpeedSection: React.FC<SpeedSectionProps> = ({
+  speed, 
+  setSpeed,
+  styleColor = 'cyan' 
+}) => {
   return (
-    <View style={styles.speedSection}>
-      <Text style={styles.label}>Speed: {speed}</Text>
+    <View style={styles.container}>
+      <Text style={[styles.label, {color: styleColor}]}>Speed: {speed}</Text>
       <Slider
         value={speed}
         onValueChange={setSpeed}
@@ -18,8 +23,8 @@ const SpeedSection: React.FC<SpeedSectionProps> = ({ speed, setSpeed }) => {
         maximumValue={50}
         step={1}
         style={styles.slider}
-        thumbTintColor="cyan"
-        minimumTrackTintColor="cyan"
+        thumbTintColor={styleColor}
+        minimumTrackTintColor={styleColor}
         maximumTrackTintColor="black"
         tapToSeek={true}
       />
@@ -28,7 +33,7 @@ const SpeedSection: React.FC<SpeedSectionProps> = ({ speed, setSpeed }) => {
 };
 
 const styles = StyleSheet.create({
-  speedSection: {
+  container: {
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 15,
@@ -41,7 +46,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 5, height: 5 },
   },
   label: {
-    color: 'cyan',
     fontSize: 16,
     marginBottom: 10,
   },

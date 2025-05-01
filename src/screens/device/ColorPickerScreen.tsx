@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import ColorPicker from 'react-native-wheel-color-picker';
-import useDeviceStore from '../../stores/deviceStore';
+import useDeviceStore, { HsvColor } from '../../stores/deviceStore';
 import { hexToHsv } from '../../utils/hexToHsv';
 import { debounce } from '../../utils/debounce';
 import LedStrip from './deviceComponents/LedStrip';
@@ -15,11 +15,6 @@ interface ColorPickerScreenProps {
   navigation: StackNavigationProp<DeviceStackParamList, 'ColorPicker'>;
 }
 
-interface HsvColor {
-  h: number;
-  s: number;
-  v: number;
-}
 
 const ColorPickerScreen: React.FC<ColorPickerScreenProps> = ({ route }) => {
   const { deviceIp } = route.params;
